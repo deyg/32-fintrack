@@ -1,6 +1,6 @@
 # SPEC-F03 — Gerenciar Contas
 
-**Status:** Proposta · **Dependências:** F01 e F09 (catálogo) · **Bloqueios:** DP-01, DP-03, DP-07, DP-08, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** F01 e F09 concluídas · **Decisões:** ADR-005 e ADR-006.  
 **Rastreabilidade:** RF-006, RF-007; RN-002, RN-004, RN-005, RN-006, RN-008, RN-009, RN-010, RN-015.
 
 ## História
@@ -28,11 +28,12 @@ Resposta de criação: 201 + `{id,categoriaId,nome,classificador,ativa}`. Conta 
 
 - Categoria deve existir e estar ativa para criar Conta.
 - `NomeConta` é a fonte de validade de nome: obrigatório, `Trim()`, 1–100 caracteres. O RequestValidator do HTTP pode reutilizar sua validação; Domain continua a proteger a entidade.
-- Nomes duplicados rejeitados; comportamento **global atualmente na PoC** (DP-01 pode mudar a regra).
+- Nomes duplicados rejeitados globalmente.
 - Categoria de DESPESA requer exatamente OF/OV/NOF/NOV; Categoria de RECEITA requer `null`.
 - Classificador pertence à Conta, nunca ao Lançamento.
-- Conta criada inicia ativa (proposta). `categoriaId` e `classificador` devem ser persistidos no esquema.
-- Não permitir renomear de modo a violar unicidade; políticas de renomeação histórica dependem de DP-03.
+- Conta criada inicia ativa. `categoriaId` e `classificador` devem ser persistidos no esquema.
+- Não permitir renomear de modo a violar unicidade; renomeação preserva ID e vínculo.
+- Contas legadas seguem a transição expand–migrate–contract da ADR-006.
 
 ## Cenários de aceite
 
