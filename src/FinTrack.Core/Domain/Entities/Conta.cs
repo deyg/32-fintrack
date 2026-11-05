@@ -57,4 +57,24 @@ public sealed class Conta
         NomeNormalizado = nomeResult.Value.Normalizado;
         return Result.Success();
     }
+
+    public void Inativar() => Ativa = false;
+
+    public Result Reativar(bool categoriaAtiva)
+    {
+        if (CategoriaId is null || !categoriaAtiva)
+            return Result.Failure(new Error("CONTA_REATIVACAO_INVALIDA",
+                "Conta exige Categoria ativa e classificada.", ErrorType.BusinessRule));
+        Ativa = true;
+        return Result.Success();
+    }
+
+    public Result DefinirClassificador(NaturezaCategoria natureza, ClassificadorConta? classificador)
+    {
+        if (natureza == NaturezaCategoria.Receita || classificador is null)
+            return Result.Failure(new Error("CONTA_CLASSIFICADOR_INVALIDO",
+                "Somente Contas de despesa aceitam classificador.", ErrorType.BusinessRule));
+        Classificador = classificador;
+        return Result.Success();
+    }
 }
