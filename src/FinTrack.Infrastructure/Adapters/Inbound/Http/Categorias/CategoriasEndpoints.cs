@@ -5,6 +5,8 @@ using FinTrack.Core.Application.UseCases.Categorias.RenomearCategoria;
 using FinTrack.Core.Domain.Enums;
 using FinTrack.Core.Domain.Errors;
 using FinTrack.Core.Domain.Results;
+using FinTrack.Core.Application.UseCases.Categorias.InativarCategoria;
+using FinTrack.Core.Application.UseCases.Categorias.ReativarCategoria;
 using FluentValidation;
 
 namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Categorias;
@@ -75,6 +77,14 @@ public static class CategoriasEndpoints
                 new RenomearCategoriaCommand(id, request.Nome), cancellationToken);
             return result.ToHttpResult(Results.Ok);
         });
+
+        grupo.MapPatch("/{id:guid}/inativacao", async (Guid id,
+            InativarCategoriaUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(id, cancellationToken)).ToHttpResult(Results.Ok));
+
+        grupo.MapPatch("/{id:guid}/ativacao", async (Guid id,
+            ReativarCategoriaUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(id, cancellationToken)).ToHttpResult(Results.Ok));
 
         return endpoints;
     }
