@@ -60,6 +60,19 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ativa");
+
+                    b.Property<Guid?>("CategoriaId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("categoria_id");
+
+                    b.Property<string>("Classificador")
+                        .HasMaxLength(3)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("classificador");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -72,10 +85,20 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoriaId");
+
                     b.HasIndex("NomeNormalizado")
                         .IsUnique();
 
                     b.ToTable("Contas", (string)null);
+                });
+
+            modelBuilder.Entity("FinTrack.Core.Domain.Entities.Conta", b =>
+                {
+                    b.HasOne("FinTrack.Core.Domain.Entities.Categoria", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
