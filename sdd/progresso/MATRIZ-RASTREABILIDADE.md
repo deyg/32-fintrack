@@ -2,7 +2,7 @@
 
 | Feature | Requisitos funcionais | Regras centrais | SPEC | Implementação | Testes executados | Commits |
 |---|---|---|---|---|---|---|
-| F01 | RF-001–RF-003 | RN-001, RN-003, RN-021 | `SPEC-F01-Categorias.md` | Pendente | Não executados | — |
+| F01 | RF-001–RF-003 | RN-001, RN-003, RN-010, RN-021 | `SPEC-F01-Categorias.md` + ADR-005 | Domain, Application, EF Core e HTTP implementados | Unitários, persistência, migrations e HTTP executados | FT-F01-001–028 em `REGISTRO-COMMITS.md` |
 | F02 | RF-004–RF-005 | RN-015, RN-023 | `SPEC-F02-Inativar-Categoria.md` | Pendente | Não executados | — |
 | F03 | RF-006–RF-007 | RN-002, RN-004–RN-010 | `SPEC-F03-Contas.md` | PoC legada parcial | Não executados nesta etapa | — |
 | F04 | RF-008–RF-009 | RN-016, RN-017 | `SPEC-F04-Situacao-Classificacao-Conta.md` | Pendente | Não executados | — |
