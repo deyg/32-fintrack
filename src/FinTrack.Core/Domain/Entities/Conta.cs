@@ -77,4 +77,19 @@ public sealed class Conta
         Classificador = classificador;
         return Result.Success();
     }
+
+    public Result ClassificarLegada(Guid categoriaId, NaturezaCategoria natureza,
+        ClassificadorConta? classificador)
+    {
+        if (CategoriaId is not null) return Result.Failure(new Error("CONTA_JA_CLASSIFICADA",
+            "Conta já possui Categoria.", ErrorType.Conflict));
+        if (categoriaId == Guid.Empty ||
+            natureza == NaturezaCategoria.Receita && classificador is not null ||
+            natureza == NaturezaCategoria.Despesa && classificador is null)
+            return Result.Failure(new Error("CONTA_CLASSIFICACAO_INVALIDA",
+                "Categoria e classificador são incompatíveis.", ErrorType.BusinessRule));
+        CategoriaId = categoriaId;
+        Classificador = classificador;
+        return Result.Success();
+    }
 }
