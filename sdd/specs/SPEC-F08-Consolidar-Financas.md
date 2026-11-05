@@ -1,6 +1,6 @@
 # SPEC-F08 — Consolidar Finanças
 
-**Status:** Proposta · **Dependências:** F05/F06/F07 · **Bloqueios:** DP-04, DP-06, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** F05/F06/F07 · **Decisão:** ADR-008.  
 **Rastreabilidade:** RF-013, RF-014; RN-007, RN-014, RN-017, RN-019, RN-020, RN-022.
 
 ## História
