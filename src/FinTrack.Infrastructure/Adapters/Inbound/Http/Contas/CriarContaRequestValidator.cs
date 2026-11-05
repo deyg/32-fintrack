@@ -1,4 +1,5 @@
 using FinTrack.Core.Domain.ValueObjects;
+using FinTrack.Core.Domain.Enums;
 using FluentValidation;
 
 namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
@@ -14,5 +15,9 @@ public sealed class CriarContaRequestValidator : AbstractValidator<CriarContaReq
             if (resultado.IsFailure)
                 contexto.AddFailure("nome", resultado.Error.Message);
         });
+        RuleFor(x => x.CategoriaId).NotEmpty().WithMessage("Categoria é obrigatória.");
+        RuleFor(x => x.Classificador)
+            .Must(valor => valor is null || Enum.TryParse<ClassificadorConta>(valor, true, out _))
+            .WithMessage("Classificador deve ser OF, OV, NOF ou NOV.");
     }
 }
