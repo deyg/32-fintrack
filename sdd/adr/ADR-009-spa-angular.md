@@ -10,7 +10,7 @@ em padrão visual escuro, capaz de operar todas as features existentes.
 
 ## Decisão
 
-- Criar `src/FinTrack.Web` como aplicação Angular 22 standalone e independente
+- Criar `src/FinTrack.Web` como aplicação Angular 21 standalone e independente
   dos projetos .NET.
 - Usar `HttpClient` em um serviço tipado para isolar o acesso à API.
 - Manter uma única página responsiva, com navegação interna entre visão geral,
