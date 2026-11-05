@@ -1,6 +1,6 @@
 # SPEC-F06 — Cancelar Lançamento
 
-**Status:** Proposta · **Dependência:** F05 · **Bloqueios:** DP-09, DP-10.  
+**Status:** Aprovada em 2026-11-05 · **Dependência:** F05 · **Decisão:** ADR-008.  
 **Rastreabilidade:** RF-011; RN-013, RN-014, RN-018.
 
 ## História
