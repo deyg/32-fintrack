@@ -73,7 +73,7 @@ Permitir que uma pessoa registre **receitas recebidas** e **despesas pagas**, or
 | RN-021 | Nome de Categoria é obrigatório e não deve repetir outra Categoria segundo política de unicidade a ratificar. | Proposta |
 | RN-022 | Operações monetárias usam `decimal`; escala e arredondamento devem ser definidos antes de implementar. | Pendente |
 | RN-023 | Inativar/reativar Conta ou Categoria não altera Lançamentos já registrados. | Proposta |
-| RN-024 | A seed das 11 categorias é idempotente, sem sobrescrever cadastros existentes. | Proposta |
+| RN-024 | A seed das 11 categorias é idempotente, sem sobrescrever cadastros existentes. | Definida |
 
 ## 6. Catálogo inicial de categorias (11)
 
