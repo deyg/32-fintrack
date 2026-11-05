@@ -1,6 +1,6 @@
 # SPEC-F05 — Registrar Lançamento
 
-**Status:** Proposta · **Dependências:** F03/F04 · **Bloqueios:** DP-06, DP-07, DP-09, DP-10.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** F03/F04 · **Decisão:** ADR-008.  
 **Rastreabilidade:** RF-010; RN-007, RN-011, RN-012, RN-016, RN-020, RN-022.
 
 ## História
