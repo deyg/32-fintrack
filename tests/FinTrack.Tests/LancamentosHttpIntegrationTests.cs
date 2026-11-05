@@ -22,6 +22,12 @@ public sealed class LancamentosHttpIntegrationTests
         Assert.Equal(5000m, consolidado.GetProperty("receitas").GetDecimal());
         Assert.Equal(1500m, consolidado.GetProperty("despesas").GetDecimal());
         Assert.Equal(3500m, consolidado.GetProperty("resultado").GetDecimal());
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync(
+            "/consolidados/por-conta?dataInicial=2020-01-01&dataFinal=2020-12-31")).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync(
+            "/consolidados/por-categoria?dataInicial=2020-01-01&dataFinal=2020-12-31")).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync(
+            "/consolidados/por-classificador?dataInicial=2020-01-01&dataFinal=2020-12-31")).StatusCode);
 
         Assert.Equal(HttpStatusCode.OK, (await client.PostAsJsonAsync(
             $"/lancamentos/{d}/cancelamento", new { motivo = "Duplicado" })).StatusCode);
@@ -49,6 +55,10 @@ public sealed class LancamentosHttpIntegrationTests
         { contaId = conta, valor = 1.001m, dataRealizacao = "2020-01-01", descricao = "x" })).StatusCode);
         Assert.Equal(HttpStatusCode.BadRequest, (await client.PostAsJsonAsync("/lancamentos", new
         { contaId = conta, valor = 1m, dataRealizacao = "2999-01-01", descricao = "x" })).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,
+            (await client.GetAsync("/lancamentos?situacao=INVALIDA")).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,
+            (await client.GetAsync("/consolidados?dataInicial=2020-02-01&dataFinal=2020-01-01")).StatusCode);
         await client.PatchAsync($"/contas/{conta}/inativacao", null);
         Assert.Equal(HttpStatusCode.UnprocessableEntity, (await client.PostAsJsonAsync("/lancamentos", new
         { contaId = conta, valor = 1m, dataRealizacao = "2020-01-01", descricao = "x" })).StatusCode);
