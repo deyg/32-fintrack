@@ -215,7 +215,7 @@
                         @else { <select class="compact-select" aria-label="Classificar conta legada" (change)="classificarLegada(conta, $any($event.target).value)"><option value="">Classificar…</option>@for (categoria of categoriasAtivas(); track categoria.id) {<option [value]="categoria.id">{{ categoria.nome }}</option>}</select> }
                       </td>
                       <td>
-                        @if (conta.classificador) { <select class="compact-select" [value]="conta.classificador" (change)="alterarClassificador(conta, $any($event.target).value)">@for (item of classificadores; track item) {<option [value]="item">{{ item }}</option>}</select> }
+                        @if (conta.classificador) { <span class="pill">{{ conta.classificador }}</span> }
                         @else { <span class="dash">—</span> }
                       </td>
                       <td><span class="state" [class.inactive]="!conta.ativa"><i></i>{{ conta.ativa ? 'Ativa' : 'Inativa' }}</span></td>
