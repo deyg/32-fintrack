@@ -1,6 +1,6 @@
 # SPEC-F07 — Consultar Lançamentos
 
-**Status:** Proposta · **Dependências:** F05/F06 · **Bloqueios:** DP-03, DP-04, DP-06, DP-08, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** F05/F06 · **Decisão:** ADR-008.  
 **Rastreabilidade:** RF-012; RN-007, RN-013, RN-017.
 
 ## História
