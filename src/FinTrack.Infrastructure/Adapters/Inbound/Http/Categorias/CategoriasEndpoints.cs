@@ -15,7 +15,7 @@ public static class CategoriasEndpoints
     {
         var grupo = endpoints.MapGroup("/categorias");
 
-        grupo.MapPost("/", async (CriarCategoriaRequest request,
+        grupo.MapPost(string.Empty, async (CriarCategoriaRequest request,
             IValidator<CriarCategoriaRequest> validator,
             CriarCategoriaUseCase useCase,
             CancellationToken cancellationToken) =>
@@ -36,7 +36,7 @@ public static class CategoriasEndpoints
             (await useCase.ExecutarAsync(new ConsultarCategoriaQuery(id), cancellationToken))
                 .ToHttpResult(Results.Ok));
 
-        grupo.MapGet("/", async (string? natureza, bool? ativa, int pagina, int tamanhoPagina,
+        grupo.MapGet(string.Empty, async (string? natureza, bool? ativa, int pagina, int tamanhoPagina,
             ListarCategoriasUseCase useCase,
             CancellationToken cancellationToken) =>
         {
