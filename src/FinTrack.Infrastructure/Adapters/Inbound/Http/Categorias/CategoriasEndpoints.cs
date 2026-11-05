@@ -36,7 +36,7 @@ public static class CategoriasEndpoints
             (await useCase.ExecutarAsync(new ConsultarCategoriaQuery(id), cancellationToken))
                 .ToHttpResult(Results.Ok));
 
-        grupo.MapGet(string.Empty, async (string? natureza, bool? ativa, int pagina, int tamanhoPagina,
+        grupo.MapGet(string.Empty, async (string? natureza, bool? ativa, int? pagina, int? tamanhoPagina,
             ListarCategoriasUseCase useCase,
             CancellationToken cancellationToken) =>
         {
@@ -56,8 +56,8 @@ public static class CategoriasEndpoints
             var query = new ListarCategoriasQuery(
                 naturezaFiltro,
                 ativa,
-                pagina == 0 ? 1 : pagina,
-                tamanhoPagina == 0 ? 20 : tamanhoPagina);
+                pagina ?? 1,
+                tamanhoPagina ?? 20);
             return (await useCase.ExecutarAsync(query, cancellationToken)).ToHttpResult(Results.Ok);
         });
 
