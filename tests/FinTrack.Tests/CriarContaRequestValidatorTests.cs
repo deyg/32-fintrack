@@ -13,7 +13,7 @@ public sealed class CriarContaRequestValidatorTests
     [InlineData("   ")]
     public void RejeitaNomeAusenteVazioOuEspacos(string? nome)
     {
-        var result = _validator.Validate(new CriarContaRequest(nome));
+        var result = _validator.Validate(new CriarContaRequest(Guid.NewGuid(), nome, null));
         Assert.False(result.IsValid);
         Assert.Contains(result.Errors, e => e.PropertyName == "nome");
     }
@@ -21,7 +21,7 @@ public sealed class CriarContaRequestValidatorTests
     [Fact]
     public void RejeitaNomeAcimaDeCemCaracteres()
     {
-        var result = _validator.Validate(new CriarContaRequest(new string('A', 101)));
+        var result = _validator.Validate(new CriarContaRequest(Guid.NewGuid(), new string('A', 101), null));
         Assert.False(result.IsValid);
         Assert.Contains(result.Errors, e => e.ErrorMessage.Contains("100 caracteres"));
     }
@@ -29,14 +29,14 @@ public sealed class CriarContaRequestValidatorTests
     [Fact]
     public void AceitaCemCaracteresAposTrim()
     {
-        var result = _validator.Validate(new CriarContaRequest("  " + new string('A', 100) + "  "));
+        var result = _validator.Validate(new CriarContaRequest(Guid.NewGuid(), "  " + new string('A', 100) + "  ", null));
         Assert.True(result.IsValid);
     }
 
     [Fact]
     public void AceitaNomeValido()
     {
-        var result = _validator.Validate(new CriarContaRequest("Conta Corrente"));
+        var result = _validator.Validate(new CriarContaRequest(Guid.NewGuid(), "Conta Corrente", null));
         Assert.True(result.IsValid);
     }
 }
