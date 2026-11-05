@@ -34,6 +34,9 @@
 | FT-F01-026 | F01 | `CategoriaRepositoryTests.cs` | RN-010/RN-021 | filtro `CategoriaRepositoryTests` | 1 aprovado | `5617fdb1ee9bc89d334792e636e9e904e74aa2d8` | Concluído |
 | FT-F01-027 | F01 | `CategoriasHttpIntegrationTests.cs` | RF-001–RF-003 | filtro `CategoriasHttpIntegrationTests` | 2 aprovados | `498d91b68db8c75855a13f4e6faf58c6d7f31739` | Concluído |
 | FT-F01-028 | F01 | `CategoriasEndpoints.cs` | DP-08 | teste HTTP F01 | 2 aprovados | `0a71f95a08844cf5ec9ff1c218a75edf989e35af` | Concluído |
+| FT-F09-001 | F09 | `InicializadorCategorias.cs` | RF-015/RN-024 | `dotnet build` | Aprovado | `58b90a02dcf38659a09986fb896b40fcd17d73c5` | Concluído |
+| FT-F09-002 | F09 | `Program.cs` | RF-015 | `dotnet build` | Aprovado | `b5745c1be8678f3a23bbdd281cef404cae3d382f` | Concluído |
+| FT-F09-003 | F09 | `InicializadorCategoriasTests.cs` | RF-015/RN-024 | filtro `InicializadorCategoriasTests` | 2 aprovados | `32fa77eef9ade9164a0b09a211564aa2414c3f2c` | Concluído |
 
 ## Modelo de registro por passo
 
