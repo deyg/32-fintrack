@@ -11,5 +11,6 @@
 | F07 | RF-012 | RN-007, RN-017 | `SPEC-F07-Consultar-Lancamentos.md` + ADR-008 | Implementada | Filtros/paginação integrados | FT-F07-001 + testes F08-003 |
 | F08 | RF-013–RF-014 | RN-014, RN-019 | `SPEC-F08-Consolidar-Financas.md` + ADR-008 | Implementada | Totais e agrupamentos integrados | FT-F08-001–003 |
 | F09 | RF-015 | RN-021, RN-024 | `SPEC-F09-Categorias-Iniciais.md` + ADR-005 | Seed explícita e transacional implementada | 2 testes específicos; suíte final 45/45 | FT-F09-001–003 |
+| F10 | Operar visualmente RF-001–RF-015 | Regras permanecem na API | `SPEC-F10-SPA-Angular.md` + ADR-009 | SPA Angular black responsiva implementada | Build Angular, 4/4 testes, proxy HTTP; backend 45/45 | FT-F10-001–023 |
 
 Atualizar a matriz **após cada commit de código**, preservando rastreabilidade requisito → regra → SPEC → arquivo → teste → SHA.
