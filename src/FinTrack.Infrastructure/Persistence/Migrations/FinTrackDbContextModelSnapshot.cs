@@ -93,12 +93,70 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.ToTable("Contas", (string)null);
                 });
 
+            modelBuilder.Entity("FinTrack.Core.Domain.Entities.Lancamento", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ContaId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("conta_id");
+
+                    b.Property<DateTimeOffset?>("DataCancelamento")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("data_cancelamento");
+
+                    b.Property<DateOnly>("DataRealizacao")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("data_realizacao");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("descricao");
+
+                    b.Property<string>("MotivoCancelamento")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("motivo_cancelamento");
+
+                    b.Property<string>("Situacao")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("situacao");
+
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("valor");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContaId");
+
+                    b.HasIndex("DataRealizacao", "Id");
+
+                    b.ToTable("lancamentos", (string)null);
+                });
+
             modelBuilder.Entity("FinTrack.Core.Domain.Entities.Conta", b =>
                 {
                     b.HasOne("FinTrack.Core.Domain.Entities.Categoria", null)
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("FinTrack.Core.Domain.Entities.Lancamento", b =>
+                {
+                    b.HasOne("FinTrack.Core.Domain.Entities.Conta", null)
+                        .WithMany()
+                        .HasForeignKey("ContaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
