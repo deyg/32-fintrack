@@ -34,8 +34,14 @@ public static class LancamentosEndpoints
             int? pagina, int? tamanhoPagina, ConsultarLancamentosUseCase useCase,
             CancellationToken cancellationToken) =>
         {
-            ClassificadorConta? c = Enum.TryParse<ClassificadorConta>(classificador, true, out var cv) ? cv : null;
-            SituacaoLancamento? s = Enum.TryParse<SituacaoLancamento>(situacao, true, out var sv) ? sv : null;
+            if (classificador is not null && !Enum.TryParse<ClassificadorConta>(classificador, true, out _))
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                    { ["classificador"] = ["Classificador inválido."] });
+            if (situacao is not null && !Enum.TryParse<SituacaoLancamento>(situacao, true, out _))
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                    { ["situacao"] = ["Situação inválida."] });
+            ClassificadorConta? c = classificador is null ? null : Enum.Parse<ClassificadorConta>(classificador, true);
+            SituacaoLancamento? s = situacao is null ? null : Enum.Parse<SituacaoLancamento>(situacao, true);
             var filtro = new FiltroLancamentos(dataInicial, dataFinal, categoriaId, contaId,
                 c, s, pagina ?? 1, tamanhoPagina ?? 20);
             return (await useCase.ExecutarAsync(filtro, cancellationToken)).ToHttpResult(Results.Ok);
@@ -44,6 +50,18 @@ public static class LancamentosEndpoints
         endpoints.MapGet("/consolidados", async (DateOnly dataInicial, DateOnly dataFinal,
             ConsolidarFinancasUseCase useCase, CancellationToken cancellationToken) =>
             (await useCase.ExecutarAsync(dataInicial, dataFinal, cancellationToken)).ToHttpResult(Results.Ok));
+        endpoints.MapGet("/consolidados/por-conta", async (DateOnly dataInicial, DateOnly dataFinal,
+            ConsolidarFinancasUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(dataInicial, dataFinal, cancellationToken))
+                .ToHttpResult(x => Results.Ok(x.PorConta)));
+        endpoints.MapGet("/consolidados/por-categoria", async (DateOnly dataInicial, DateOnly dataFinal,
+            ConsolidarFinancasUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(dataInicial, dataFinal, cancellationToken))
+                .ToHttpResult(x => Results.Ok(x.PorCategoria)));
+        endpoints.MapGet("/consolidados/por-classificador", async (DateOnly dataInicial, DateOnly dataFinal,
+            ConsolidarFinancasUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(dataInicial, dataFinal, cancellationToken))
+                .ToHttpResult(x => Results.Ok(x.PorClassificador)));
         return endpoints;
     }
 }
