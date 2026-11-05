@@ -139,6 +139,8 @@
 | FT-F10-021 | F10 | src/FinTrack.Web/src/app/core/fintrack-api.service.spec.ts | SPEC-F10 | 2/2 testes do cliente | Aprovado | cd8d7ca8717907672f17b937873e30d98dce4f0f | Concluído |
 | FT-F10-022 | F10 | src/FinTrack.Web/public/favicon.ico | SPEC-F10 | asset incluído no build | Aprovado | 8beab653998fad63ab19f1e6a346dc7b1008e2bd | Concluído |
 | FT-F10-023 | F10 | src/FinTrack.Web/README.md | SPEC-F10 | comandos documentados executados | Aprovado | 7c0cc25f628dae212adb2bdf889fe793bd86f2c5 | Concluído |
+| FT-F10-024 | F10 | src/FinTrack.Web/src/app/app.ts | SPEC-F10 | build Angular + 5/5 testes | Aprovado | 655629b14903aa3f5762277fbda0acb547ff5a28 | Concluído |
+| FT-F10-025 | F10 | src/FinTrack.Web/src/app/app.spec.ts | SPEC-F10 | regressão DESPESA → combo OF/OV/NOF/NOV | Aprovado | eba73a8ae8fed18bd58e1d46413721706f26afde | Concluído |
 
 ## Modelo de registro por passo
 
