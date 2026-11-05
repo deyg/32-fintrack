@@ -13,6 +13,11 @@ using FluentValidation;
 using FinTrack.Core.Domain.Ports;
 using FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
 using FinTrack.Infrastructure.Adapters.Inbound.Http.Categorias;
+using FinTrack.Infrastructure.Adapters.Inbound.Http.Lancamentos;
+using FinTrack.Core.Application.UseCases.Lancamentos.RegistrarLancamento;
+using FinTrack.Core.Application.UseCases.Lancamentos.CancelarLancamento;
+using FinTrack.Core.Application.UseCases.Lancamentos.ConsultarLancamentos;
+using FinTrack.Core.Application.UseCases.Lancamentos.ConsolidarFinancas;
 using FinTrack.Infrastructure.ExceptionHandling;
 using FinTrack.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +29,18 @@ builder.Services.AddDbContext<FinTrackDbContext>(options =>
         ?? "Data Source=fintrack.db"));
 builder.Services.AddScoped<IContaRepository, ContaRepository>();
 builder.Services.AddScoped<IRepositorioCategorias, CategoriaRepository>();
+builder.Services.AddScoped<IRepositorioLancamentos, LancamentoRepository>();
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<InicializadorCategorias>();
 builder.Services.AddScoped<CriarContaUseCase>();
 builder.Services.AddScoped<ConsultarContaUseCase>();
 builder.Services.AddScoped<ListarContasUseCase>();
 builder.Services.AddScoped<RenomearContaUseCase>();
 builder.Services.AddScoped<AlterarEstadoContaUseCase>();
+builder.Services.AddScoped<RegistrarLancamentoUseCase>();
+builder.Services.AddScoped<CancelarLancamentoUseCase>();
+builder.Services.AddScoped<ConsultarLancamentosUseCase>();
+builder.Services.AddScoped<ConsolidarFinancasUseCase>();
 builder.Services.AddScoped<CriarCategoriaUseCase>();
 builder.Services.AddScoped<ConsultarCategoriaUseCase>();
 builder.Services.AddScoped<ListarCategoriasUseCase>();
@@ -38,6 +49,7 @@ builder.Services.AddScoped<InativarCategoriaUseCase>();
 builder.Services.AddScoped<ReativarCategoriaUseCase>();
 builder.Services.AddScoped<IValidator<CriarContaRequest>, CriarContaRequestValidator>();
 builder.Services.AddScoped<IValidator<RenomearContaRequest>, RenomearContaRequestValidator>();
+builder.Services.AddScoped<IValidator<RegistrarLancamentoRequest>, RegistrarLancamentoRequestValidator>();
 builder.Services.AddScoped<IValidator<CriarCategoriaRequest>, CriarCategoriaRequestValidator>();
 builder.Services.AddScoped<IValidator<RenomearCategoriaRequest>, RenomearCategoriaRequestValidator>();
 builder.Services.AddExceptionHandler<UnexpectedExceptionHandler>();
@@ -60,6 +72,7 @@ if (args.Contains("--inicializar-categorias", StringComparer.OrdinalIgnoreCase))
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapContasEndpoints();
 app.MapCategoriasEndpoints();
+app.MapLancamentosEndpoints();
 app.Run();
 
 // Ponto de entrada visível aos testes de integração com WebApplicationFactory.
