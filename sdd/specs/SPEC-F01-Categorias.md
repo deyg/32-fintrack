@@ -1,18 +1,18 @@
 # SPEC-F01 — Gerenciar Categorias
 
-**Status:** Proposta · **Dependências:** base da Solution, modelos do Domain · **Bloqueios:** DP-02, DP-03, DP-07, DP-08, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** base da Solution, modelos do Domain · **Decisões:** ADR-005.  
 **Rastreabilidade:** RF-001, RF-002, RF-003; RN-001, RN-003, RN-017, RN-021.
 
 ## História
 
 Como usuário, quero cadastrar, consultar, listar e renomear categorias de receita ou despesa para organizar as rubricas de minhas finanças.
 
-## Contratos HTTP propostos — sujeitos a aprovação
+## Contratos HTTP aprovados
 
 | Método | Rota | Operação | Resposta de sucesso |
 |---|---|---|---|
 | POST | `/categorias` | Cadastrar | 201 + `{id,nome,natureza,ativa}` |
-| GET | `/categorias` | Listar (opcional: natureza, ativa, paginação) | 200 + coleção |
+| GET | `/categorias` | Listar por natureza/ativa, página 1, tamanho 20 (máximo 100) | 200 + página |
 | GET | `/categorias/{id}` | Consultar | 200 + categoria |
 | PATCH | `/categorias/{id}/nome` | Renomear | 200 + categoria atualizada |
 
@@ -21,9 +21,11 @@ Como usuário, quero cadastrar, consultar, listar e renomear categorias de recei
 ## Regras
 
 - Nome e natureza são obrigatórios. Natureza somente RECEITA ou DESPESA (RN-001).
-- Nome, unicidade, trim e limite da Categoria aguardam DP-02. Não copiar automaticamente a regra de Conta.
-- Categoria criada inicia ativa (proposta).
-- Renomear deve preservar histórico e observar DP-03; não oferecer alteração de natureza por este endpoint.
+- Nome obrigatório, `Trim`, máximo de 100 caracteres e unicidade global sem distinção de caixa.
+- Categoria criada inicia ativa.
+- Renomear é permitido com histórico, preserva ID e natureza e não audita nomes anteriores na F01.
+- Identificadores usam `Guid`.
+- Listagem ordena por nome e ID e aceita filtros opcionais `natureza` e `ativa`.
 - Não apagar categoria com contas vinculadas em cascata.
 
 ## Cenários de aceite
