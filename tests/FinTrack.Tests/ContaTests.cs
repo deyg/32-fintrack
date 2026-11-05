@@ -46,6 +46,15 @@ public sealed class ContaTests
         Assert.True(Conta.Criar(Guid.NewGuid(), NaturezaCategoria.Receita, "Salário", ClassificadorConta.OF).IsFailure);
     }
 
+    [Fact]
+    public void ContaNovaNaoPodeSerClassificadaNovamente()
+    {
+        var conta = CriarReceita("Salário").Value;
+        var result = conta.ClassificarLegada(Guid.NewGuid(), NaturezaCategoria.Receita, null);
+        Assert.True(result.IsFailure);
+        Assert.Equal(ErrorType.Conflict, result.Error.Type);
+    }
+
     private static Result<Conta> CriarReceita(string? nome) =>
         Conta.Criar(Guid.NewGuid(), NaturezaCategoria.Receita, nome, null);
 
