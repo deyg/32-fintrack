@@ -1,0 +1,163 @@
+{
+  "version": "1.7",
+  "static_checks_passed": 38,
+  "static_checks_total": 38,
+  "checks": [
+    {
+      "name": "harness 8 skills",
+      "passed": true
+    },
+    {
+      "name": "poc 8 skills",
+      "passed": true
+    },
+    {
+      "name": "one domain validation definition",
+      "passed": true
+    },
+    {
+      "name": "domain entity delegates NomeConta",
+      "passed": true
+    },
+    {
+      "name": "validator delegates NomeConta",
+      "passed": true
+    },
+    {
+      "name": "no duplicate max length rule",
+      "passed": true
+    },
+    {
+      "name": "no fluent in core",
+      "passed": true
+    },
+    {
+      "name": "endpoint uses common mapper",
+      "passed": true
+    },
+    {
+      "name": "endpoint no error switch",
+      "passed": true
+    },
+    {
+      "name": "common mapper all errors",
+      "passed": true
+    },
+    {
+      "name": "public Program for WebApplicationFactory",
+      "passed": true
+    },
+    {
+      "name": "HTTP integration testing package",
+      "passed": true
+    },
+    {
+      "name": "HTTP integration tests 201 400 409",
+      "passed": true
+    },
+    {
+      "name": "isolated SQLite temporary db",
+      "passed": true
+    },
+    {
+      "name": "SQLite uniqueness protected",
+      "passed": true
+    },
+    {
+      "name": "ADR-003 created",
+      "passed": true
+    },
+    {
+      "name": "XML valid FinTrack.Infrastructure.csproj",
+      "passed": true
+    },
+    {
+      "name": "XML valid FinTrack.Core.csproj",
+      "passed": true
+    },
+    {
+      "name": "XML valid FinTrack.Tests.csproj",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Program.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/ValueObjects/NomeConta.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Ports/IContaRepository.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Entities/Conta.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Results/ResultOfT.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Results/Result.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Errors/ErrorType.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Domain/Errors/Error.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Application/UseCases/Contas/CriarConta/CriarContaUseCase.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Application/UseCases/Contas/CriarConta/CriarContaCommand.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Core/Application/UseCases/Contas/CriarConta/CriarContaOutput.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Persistence/ContaRepository.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Persistence/FinTrackDbContext.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/ExceptionHandling/UnexpectedExceptionHandler.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Adapters/Inbound/Http/ResultHttpExtensions.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Adapters/Inbound/Http/Contas/ContasEndpoints.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Adapters/Inbound/Http/Contas/CriarContaRequest.cs",
+      "passed": true
+    },
+    {
+      "name": "C# brace balance src/FinTrack.Infrastructure/Adapters/Inbound/Http/Contas/CriarContaRequestValidator.cs",
+      "passed": true
+    },
+    {
+      "name": "actual SQLite UNIQUE rejects normalized duplicate",
+      "passed": true
+    }
+  ],
+  "dotnet_available": false,
+  "dotnet_build_executed": false,
+  "dotnet_tests_executed": false,
+  "http_integration_tests_executed": false
+}

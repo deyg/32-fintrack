@@ -1,0 +1,30 @@
+using FinTrack.Core.Application.UseCases.Contas.CriarConta;
+using FinTrack.Infrastructure.Adapters.Inbound.Http;
+using FluentValidation;
+
+namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
+
+public static class ContasEndpoints
+{
+    public static IEndpointRouteBuilder MapContasEndpoints(this IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapPost("/contas", async (
+            CriarContaRequest request,
+            IValidator<CriarContaRequest> validator,
+            CriarContaUseCase useCase,
+            CancellationToken cancellationToken) =>
+        {
+            var validation = await validator.ValidateAsync(request, cancellationToken);
+            if (!validation.IsValid)
+                return Results.ValidationProblem(validation.ToDictionary());
+
+            var command = new CriarContaCommand(request.Nome);
+            var result = await useCase.ExecuteAsync(command, cancellationToken);
+
+            return result.ToHttpResult(conta => Results.Created(
+                $"/contas/{conta.Id}", new { conta.Id, conta.Nome }));
+        });
+
+        return endpoints;
+    }
+}

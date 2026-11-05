@@ -1,0 +1,11 @@
+{
+  "tested_code_files_unchanged": 33,
+  "spec_count": 9,
+  "functional_requirements": 15,
+  "business_rules": 24,
+  "seed_categories": 11,
+  "docs_relative_links_ok": true,
+  "dotnet_build": "NAO_EXECUTADO",
+  "dotnet_test": "NAO_EXECUTADO",
+  "git_commits": "NAO_CRIADOS_DOCUMENTACAO"
+}

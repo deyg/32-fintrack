@@ -1,0 +1,143 @@
+{
+  "version": "v1.8",
+  "static_and_sql_checks": 26,
+  "passed": 26,
+  "failed": 0,
+  "dotnet_sdk_available": false,
+  "dotnet_build_executed": false,
+  "dotnet_tests_executed": false,
+  "http_runtime_executed": false,
+  "note": "Simulação SQL não comprova execução de migrations EF Core nem de testes HTTP C#.",
+  "checks": [
+    {
+      "check": "XML valid: src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "XML valid: src/FinTrack.Core/FinTrack.Core.csproj",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "XML valid: tests/FinTrack.Tests/FinTrack.Tests.csproj",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Solution XML valid",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Core without EF/HTTP/FluentValidation reference",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Infrastructure references Core",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "EF Design 10.0.14 in infrastructure",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "dotnet-ef tool manifest valid",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "No EnsureCreated/Migrate in API startup",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Initial migration Up/Down",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "14-digit EF migration ID with annotation",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Snapshot preserves unique-index and columns",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Initial migration has unique normalized name",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Test factory calls Database.Migrate",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "No EnsureCreated in C# test code",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "Migration idempotence test source",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "HTTP test declared: CadastrarContaValidaRetorna201EBody",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "HTTP test declared: NomeDuplicadoComVariacaoDeCaixaEEspacosRetorna409",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "HTTP test declared: NomeVazioRetorna400ComErroNoCampo",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "HTTP test declared: EndpointHealthRetorna200",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "HTTP test declared: NomeAusenteRetorna400",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "CI workflow exists",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "ADR-004 exists",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "SQLite UNIQUE normalizado (SQL equivalente)",
+      "status": "pass",
+      "note": "Executado com sqlite3 Python; NAO executa EF Core"
+    },
+    {
+      "check": "SQLite unique index persisted",
+      "status": "pass",
+      "note": ""
+    },
+    {
+      "check": "SQLite migration-history equivalent",
+      "status": "pass",
+      "note": "Histórico simulado em SQLite, sem API EF Core"
+    }
+  ]
+}
