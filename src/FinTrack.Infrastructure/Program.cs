@@ -18,6 +18,7 @@ builder.Services.AddDbContext<FinTrackDbContext>(options =>
         ?? "Data Source=fintrack.db"));
 builder.Services.AddScoped<IContaRepository, ContaRepository>();
 builder.Services.AddScoped<IRepositorioCategorias, CategoriaRepository>();
+builder.Services.AddScoped<InicializadorCategorias>();
 builder.Services.AddScoped<CriarContaUseCase>();
 builder.Services.AddScoped<CriarCategoriaUseCase>();
 builder.Services.AddScoped<ConsultarCategoriaUseCase>();
@@ -31,6 +32,15 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 app.UseExceptionHandler();
+
+if (args.Contains("--inicializar-categorias", StringComparer.OrdinalIgnoreCase))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var inicializador = scope.ServiceProvider.GetRequiredService<InicializadorCategorias>();
+    var adicionadas = await inicializador.ExecutarAsync(app.Lifetime.ApplicationStopping);
+    app.Logger.LogInformation("Inicialização concluída: {Quantidade} categorias adicionadas.", adicionadas);
+    return;
+}
 
 // O esquema deve ser migrado explicitamente durante o deploy ou setup local.
 // A API não altera o esquema automaticamente ao iniciar.
