@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FinTrack.Infrastructure.Persistence;
+using Microsoft.Data.Sqlite;
 
 namespace FinTrack.Tests;
 
@@ -43,6 +44,7 @@ public sealed class FinTrackApiFactory : WebApplicationFactory<Program>
         base.Dispose(disposing);
         if (disposing)
         {
+            SqliteConnection.ClearAllPools();
             foreach (var suffix in new[] { "", "-wal", "-shm" })
             {
                 var path = _dbPath + suffix;
