@@ -16,7 +16,7 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                 table: "Contas",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: true);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "categoria_id",
