@@ -16,22 +16,6 @@ public sealed class Conta
 
     private Conta() { } // Materialização pelo EF Core
 
-    public static Result<Conta> Criar(string? nome)
-    {
-        var nomeResult = NomeConta.Criar(nome);
-        if (nomeResult.IsFailure)
-            return Result<Conta>.Failure(nomeResult.Error);
-
-        var nomeValido = nomeResult.Value;
-        return Result<Conta>.Success(new Conta
-        {
-            Id = Guid.NewGuid(),
-            Nome = nomeValido.Valor,
-            NomeNormalizado = nomeValido.Normalizado,
-            Ativa = true
-        });
-    }
-
     public static Result<Conta> Criar(
         Guid categoriaId,
         NaturezaCategoria natureza,
@@ -53,13 +37,14 @@ public sealed class Conta
                 ErrorType.BusinessRule));
         }
 
-        var contaResult = Criar(nome);
-        if (contaResult.IsFailure)
-            return contaResult;
-
-        contaResult.Value.CategoriaId = categoriaId;
-        contaResult.Value.Classificador = classificador;
-        return contaResult;
+        var nomeResult = NomeConta.Criar(nome);
+        if (nomeResult.IsFailure) return Result<Conta>.Failure(nomeResult.Error);
+        return Result<Conta>.Success(new Conta
+        {
+            Id = Guid.NewGuid(), CategoriaId = categoriaId,
+            Nome = nomeResult.Value.Valor, NomeNormalizado = nomeResult.Value.Normalizado,
+            Classificador = classificador, Ativa = true
+        });
     }
 
     public Result Renomear(string? nome)
