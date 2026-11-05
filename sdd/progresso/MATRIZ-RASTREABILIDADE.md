@@ -10,6 +10,6 @@
 | F06 | RF-011 | RN-013, RN-014 | `SPEC-F06-Cancelar-Lancamento.md` + ADR-008 | Implementada | Cancelamento idempotente integrado | FT-F06-001 + testes F05-016 |
 | F07 | RF-012 | RN-007, RN-017 | `SPEC-F07-Consultar-Lancamentos.md` + ADR-008 | Implementada | Filtros/paginação integrados | FT-F07-001 + testes F08-003 |
 | F08 | RF-013–RF-014 | RN-014, RN-019 | `SPEC-F08-Consolidar-Financas.md` + ADR-008 | Implementada | Totais e agrupamentos integrados | FT-F08-001–003 |
-| F09 | RF-015 | RN-021, RN-024 | `SPEC-F09-Categorias-Iniciais.md` + ADR-005 | Seed explícita e transacional implementada | 2 testes específicos; suíte 43/43 | FT-F09-001–003 |
+| F09 | RF-015 | RN-021, RN-024 | `SPEC-F09-Categorias-Iniciais.md` + ADR-005 | Seed explícita e transacional implementada | 2 testes específicos; suíte final 45/45 | FT-F09-001–003 |
 
 Atualizar a matriz **após cada commit de código**, preservando rastreabilidade requisito → regra → SPEC → arquivo → teste → SHA.
