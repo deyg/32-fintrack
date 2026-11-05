@@ -1,6 +1,6 @@
 # SPEC-F02 — Inativar Categoria
 
-**Status:** Proposta · **Dependência:** F01 + F03 para testes de bloqueio · **Bloqueios:** DP-05, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependência:** F01 + F03 · **Decisão:** ADR-007.  
 **Rastreabilidade:** RF-004, RF-005; RN-015, RN-018, RN-023.
 
 ## História
@@ -10,8 +10,8 @@ Como usuário, quero inativar uma categoria sem apagar contas ou lançamentos, p
 ## Contratos propostos
 
 - `PATCH /categorias/{id}/inativacao`: inativa categoria existente.
-- `PATCH /categorias/{id}/ativacao`: reativação **condicional** à aprovação de DP-05.
-- Respostas: 200 ou 204 no sucesso (definir); 404 para ID inexistente; conflito de estado conforme política aprovada.
+- `PATCH /categorias/{id}/ativacao`: reativa a categoria.
+- Respostas: 200 no sucesso e 404 para ID inexistente; repetição é idempotente.
 
 ## Regras
 
