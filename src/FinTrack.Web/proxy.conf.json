@@ -1,0 +1,7 @@
+{
+  "/health": { "target": "http://127.0.0.1:5100", "secure": false },
+  "/categorias": { "target": "http://127.0.0.1:5100", "secure": false },
+  "/contas": { "target": "http://127.0.0.1:5100", "secure": false },
+  "/lancamentos": { "target": "http://127.0.0.1:5100", "secure": false },
+  "/consolidados": { "target": "http://127.0.0.1:5100", "secure": false }
+}
