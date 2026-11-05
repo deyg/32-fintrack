@@ -1,5 +1,7 @@
 using FinTrack.Core.Domain.Results;
 using FinTrack.Core.Domain.ValueObjects;
+using FinTrack.Core.Domain.Enums;
+using FinTrack.Core.Domain.Errors;
 
 namespace FinTrack.Core.Domain.Entities;
 
@@ -8,6 +10,9 @@ public sealed class Conta
     public Guid Id { get; private set; }
     public string Nome { get; private set; } = string.Empty;
     public string NomeNormalizado { get; private set; } = string.Empty;
+    public Guid? CategoriaId { get; private set; }
+    public ClassificadorConta? Classificador { get; private set; }
+    public bool Ativa { get; private set; }
 
     private Conta() { } // Materialização pelo EF Core
 
@@ -22,7 +27,49 @@ public sealed class Conta
         {
             Id = Guid.NewGuid(),
             Nome = nomeValido.Valor,
-            NomeNormalizado = nomeValido.Normalizado
+            NomeNormalizado = nomeValido.Normalizado,
+            Ativa = true
         });
+    }
+
+    public static Result<Conta> Criar(
+        Guid categoriaId,
+        NaturezaCategoria natureza,
+        string? nome,
+        ClassificadorConta? classificador)
+    {
+        if (categoriaId == Guid.Empty)
+        {
+            return Result<Conta>.Failure(new Error(
+                "CONTA_CATEGORIA_INVALIDA", "Categoria é obrigatória.", ErrorType.Validation));
+        }
+
+        if (natureza == NaturezaCategoria.Receita && classificador is not null ||
+            natureza == NaturezaCategoria.Despesa && classificador is null)
+        {
+            return Result<Conta>.Failure(new Error(
+                "CONTA_CLASSIFICADOR_INVALIDO",
+                "Receitas não possuem classificador e despesas exigem OF, OV, NOF ou NOV.",
+                ErrorType.BusinessRule));
+        }
+
+        var contaResult = Criar(nome);
+        if (contaResult.IsFailure)
+            return contaResult;
+
+        contaResult.Value.CategoriaId = categoriaId;
+        contaResult.Value.Classificador = classificador;
+        return contaResult;
+    }
+
+    public Result Renomear(string? nome)
+    {
+        var nomeResult = NomeConta.Criar(nome);
+        if (nomeResult.IsFailure)
+            return Result.Failure(nomeResult.Error);
+
+        Nome = nomeResult.Value.Valor;
+        NomeNormalizado = nomeResult.Value.Normalizado;
+        return Result.Success();
     }
 }
