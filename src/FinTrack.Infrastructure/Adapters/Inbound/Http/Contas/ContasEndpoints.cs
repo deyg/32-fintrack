@@ -5,6 +5,7 @@ using FinTrack.Core.Domain.Enums;
 using FinTrack.Core.Application.UseCases.Contas.ConsultarConta;
 using FinTrack.Core.Application.UseCases.Contas.ListarContas;
 using FinTrack.Core.Application.UseCases.Contas.RenomearConta;
+using FinTrack.Core.Application.UseCases.Contas.AlterarEstadoConta;
 
 namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
 
@@ -51,6 +52,13 @@ public static class ContasEndpoints
             return (await useCase.ExecutarAsync(
                 new RenomearContaCommand(id, request.Nome), cancellationToken)).ToHttpResult(Results.Ok);
         });
+
+        endpoints.MapPatch("/contas/{id:guid}/inativacao", async (Guid id,
+            AlterarEstadoContaUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(id, false, cancellationToken)).ToHttpResult(Results.Ok));
+        endpoints.MapPatch("/contas/{id:guid}/ativacao", async (Guid id,
+            AlterarEstadoContaUseCase useCase, CancellationToken cancellationToken) =>
+            (await useCase.ExecutarAsync(id, true, cancellationToken)).ToHttpResult(Results.Ok));
 
         return endpoints;
     }
