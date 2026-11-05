@@ -1,6 +1,7 @@
 using FinTrack.Core.Application.UseCases.Contas.CriarConta;
 using FinTrack.Infrastructure.Adapters.Inbound.Http;
 using FluentValidation;
+using FinTrack.Core.Domain.Enums;
 
 namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
 
@@ -18,11 +19,14 @@ public static class ContasEndpoints
             if (!validation.IsValid)
                 return Results.ValidationProblem(validation.ToDictionary());
 
-            var command = new CriarContaCommand(request.Nome);
+            ClassificadorConta? classificador = request.Classificador is null
+                ? null
+                : Enum.Parse<ClassificadorConta>(request.Classificador, true);
+            var command = new CriarContaCommand(request.CategoriaId, request.Nome, classificador);
             var result = await useCase.ExecuteAsync(command, cancellationToken);
 
             return result.ToHttpResult(conta => Results.Created(
-                $"/contas/{conta.Id}", new { conta.Id, conta.Nome }));
+                $"/contas/{conta.Id}", conta));
         });
 
         return endpoints;
