@@ -16,7 +16,7 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 | ProblemDetails + ResultHttpExtensions | Infrastructure/Inbound | Centralizar tradução Result → HTTP 400/404/409/422; 500 inesperado | Sem HTTP no Core; erros por campo no RequestValidator |
 | CancellationToken | Application e Infrastructure | Cancelamento cooperativo | Repassar até I/O; Domain síncrono independente |
 | xUnit 2.9.3 + WebApplicationFactory 10.0.14 | Tests | Unitários e integração HTTP + SQLite temporário | Terceiro projeto só de testes; banco isolado por teste |
-| Angular 22.2.x standalone + TypeScript | `src/FinTrack.Web` | SPA de página única para operar o MVP | Sem referência aos projetos .NET; regras permanecem na API; ADR-009 |
+| Angular 21.2.x standalone + TypeScript | `src/FinTrack.Web` | SPA de página única para operar o MVP | Compatível com Node 22.19 disponível; sem referência aos projetos .NET; regras permanecem na API; ADR-009 |
 | Angular HttpClient | `src/FinTrack.Web/app/core` | Cliente tipado da API HTTP | Proxy local para a API; sem duplicar regras de domínio |
 | CSS responsivo próprio | `src/FinTrack.Web/app` | Tema black e componentes visuais | Sem biblioteca visual adicional neste incremento |
 | Vitest | `src/FinTrack.Web` | Testes unitários do frontend | Execução não interativa no pipeline local |
