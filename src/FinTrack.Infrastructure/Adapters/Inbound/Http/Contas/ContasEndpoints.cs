@@ -7,6 +7,7 @@ using FinTrack.Core.Application.UseCases.Contas.ListarContas;
 using FinTrack.Core.Application.UseCases.Contas.RenomearConta;
 using FinTrack.Core.Application.UseCases.Contas.AlterarEstadoConta;
 using FinTrack.Core.Application.UseCases.Contas.DefinirClassificador;
+using FinTrack.Core.Application.UseCases.Contas.ClassificarContaLegada;
 
 namespace FinTrack.Infrastructure.Adapters.Inbound.Http.Contas;
 
@@ -69,6 +70,19 @@ public static class ContasEndpoints
                 return Results.ValidationProblem(new Dictionary<string, string[]>
                     { ["classificador"] = ["Classificador deve ser OF, OV, NOF ou NOV."] });
             return (await useCase.ExecutarAsync(id, valor, cancellationToken)).ToHttpResult(Results.Ok);
+        });
+
+        endpoints.MapPatch("/contas/{id:guid}/categoria", async (Guid id,
+            ClassificarContaLegadaRequest request, ClassificarContaLegadaUseCase useCase,
+            CancellationToken cancellationToken) =>
+        {
+            ClassificadorConta? valor = request.Classificador is null ? null :
+                Enum.TryParse<ClassificadorConta>(request.Classificador, true, out var parsed) ? parsed : null;
+            if (request.Classificador is not null && valor is null)
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                    { ["classificador"] = ["Classificador inválido."] });
+            return (await useCase.ExecutarAsync(id, request.CategoriaId, valor, cancellationToken))
+                .ToHttpResult(Results.Ok);
         });
 
         return endpoints;
