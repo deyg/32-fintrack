@@ -66,9 +66,6 @@ export class App implements OnInit {
     this.categorias().filter((categoria) => categoria.ativa),
   );
   protected readonly contasAtivas = computed(() => this.contas().filter((conta) => conta.ativa));
-  protected readonly categoriaNovaConta = computed(() =>
-    this.categorias().find((categoria) => categoria.id === this.novaConta.categoriaId),
-  );
   protected readonly totalReceitasAtivas = computed(
     () => this.categorias().filter((item) => item.ativa && item.natureza === 'RECEITA').length,
   );
@@ -248,6 +245,10 @@ export class App implements OnInit {
 
   protected nomeConta(id: string): string {
     return this.contas().find((conta) => conta.id === id)?.nome ?? 'Conta não encontrada';
+  }
+
+  protected categoriaNovaConta(): Categoria | undefined {
+    return this.categorias().find((categoria) => categoria.id === this.novaConta.categoriaId);
   }
 
   protected tituloSecao(): string {
