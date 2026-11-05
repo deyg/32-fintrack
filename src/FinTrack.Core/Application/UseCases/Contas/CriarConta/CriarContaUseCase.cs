@@ -9,9 +9,6 @@ public sealed class CriarContaUseCase(
     IContaRepository repository,
     IRepositorioCategorias repositorioCategorias)
 {
-    public CriarContaUseCase(IContaRepository repository)
-        : this(repository, new RepositorioCategoriasLegado()) { }
-
     public async Task<Result<CriarContaOutput>> ExecuteAsync(
         CriarContaCommand command,
         CancellationToken cancellationToken)
@@ -48,21 +45,5 @@ public sealed class CriarContaUseCase(
             conta.Nome,
             conta.Classificador?.ToString(),
             conta.Ativa));
-    }
-
-    private sealed class RepositorioCategoriasLegado : IRepositorioCategorias
-    {
-        private readonly Categoria _categoria = Categoria.Criar(
-            "Compatibilidade", FinTrack.Core.Domain.Enums.NaturezaCategoria.Receita).Value;
-
-        public Task<Categoria?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken) =>
-            Task.FromResult<Categoria?>(_categoria);
-        public Task<bool> TentarAdicionarAsync(Categoria categoria, CancellationToken cancellationToken) =>
-            throw new NotSupportedException();
-        public Task<(IReadOnlyList<Categoria> Itens, int Total)> ListarAsync(
-            FinTrack.Core.Domain.Enums.NaturezaCategoria? natureza, bool? ativa, int pagina, int tamanhoPagina,
-            CancellationToken cancellationToken) => throw new NotSupportedException();
-        public Task<bool> TentarAtualizarAsync(Categoria categoria, CancellationToken cancellationToken) =>
-            throw new NotSupportedException();
     }
 }
