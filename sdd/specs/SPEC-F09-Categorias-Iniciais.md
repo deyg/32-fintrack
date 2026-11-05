@@ -1,6 +1,6 @@
 # SPEC-F09 — Inicializar Categorias
 
-**Status:** Proposta · **Dependência:** F01 · **Bloqueios:** DP-02, DP-07.  
+**Status:** Aprovada em 2026-11-05 · **Dependência:** F01 concluída · **Decisões:** ADR-005.  
 **Rastreabilidade:** RF-015; RN-001, RN-021, RN-024.
 
 ## História
