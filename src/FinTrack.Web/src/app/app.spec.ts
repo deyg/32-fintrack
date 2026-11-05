@@ -41,7 +41,16 @@ describe('App', () => {
       total: 1,
     });
     http.expectOne((request) => request.url === '/contas').flush({
-      itens: [], pagina: 1, tamanhoPagina: 100, total: 0,
+      itens: [{
+        id: 'conta-1',
+        categoriaId: 'categoria-1',
+        nome: 'Aluguel',
+        classificador: 'OF',
+        ativa: true,
+      }],
+      pagina: 1,
+      tamanhoPagina: 100,
+      total: 1,
     });
     http.expectOne((request) => request.url === '/lancamentos').flush({
       itens: [], pagina: 1, tamanhoPagina: 100, total: 0,
@@ -70,5 +79,7 @@ describe('App', () => {
     const selector = compiled.querySelector('select[name="classificadorConta"]');
     expect(selector).not.toBeNull();
     expect(selector?.querySelectorAll('option')).toHaveLength(4);
+    expect(compiled.querySelector('tbody .pill')?.textContent?.trim()).toBe('OF');
+    expect(compiled.querySelector('tbody select.compact-select')).toBeNull();
   });
 });
