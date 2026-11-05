@@ -61,5 +61,14 @@ public sealed class CriarContaUseCaseTests
             TokenRecebido = cancellationToken;
             return Task.FromResult(DeveInserir);
         }
+
+        public Task<Conta?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken) =>
+            Task.FromResult<Conta?>(null);
+        public Task<(IReadOnlyList<Conta> Itens, int Total)> ListarAsync(
+            Guid? categoriaId, bool? ativa, int pagina, int tamanhoPagina,
+            CancellationToken cancellationToken) =>
+            Task.FromResult(((IReadOnlyList<Conta>)Array.Empty<Conta>(), 0));
+        public Task<bool> TentarAtualizarAsync(Conta conta, CancellationToken cancellationToken) =>
+            Task.FromResult(true);
     }
 }
