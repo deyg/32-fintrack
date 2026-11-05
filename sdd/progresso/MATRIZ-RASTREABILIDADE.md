@@ -10,6 +10,6 @@
 | F06 | RF-011 | RN-013, RN-014 | `SPEC-F06-Cancelar-Lancamento.md` | Pendente | Não executados | — |
 | F07 | RF-012 | RN-007, RN-017 | `SPEC-F07-Consultar-Lancamentos.md` | Pendente | Não executados | — |
 | F08 | RF-013–RF-014 | RN-014, RN-019 | `SPEC-F08-Consolidar-Financas.md` | Pendente | Não executados | — |
-| F09 | RF-015 | RN-021, RN-024 | `SPEC-F09-Categorias-Iniciais.md` | Pendente | Não executados | — |
+| F09 | RF-015 | RN-021, RN-024 | `SPEC-F09-Categorias-Iniciais.md` + ADR-005 | Seed explícita e transacional implementada | 2 testes específicos; suíte 43/43 | FT-F09-001–003 |
 
 Atualizar a matriz **após cada commit de código**, preservando rastreabilidade requisito → regra → SPEC → arquivo → teste → SHA.
