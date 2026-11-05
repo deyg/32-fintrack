@@ -1,6 +1,6 @@
 # SPEC-F04 — Situação e Classificação da Conta
 
-**Status:** Proposta · **Dependências:** F03; histórico F05 para validar bloqueios · **Bloqueios:** DP-04, DP-05, DP-09.  
+**Status:** Aprovada em 2026-11-05 · **Dependências:** F03; histórico F05 para validar bloqueios · **Decisão:** ADR-007; alterações com histórico são bloqueadas.  
 **Rastreabilidade:** RF-008, RF-009; RN-004, RN-005, RN-016, RN-017, RN-023.
 
 ## História
