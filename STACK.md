@@ -16,6 +16,10 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 | ProblemDetails + ResultHttpExtensions | Infrastructure/Inbound | Centralizar tradução Result → HTTP 400/404/409/422; 500 inesperado | Sem HTTP no Core; erros por campo no RequestValidator |
 | CancellationToken | Application e Infrastructure | Cancelamento cooperativo | Repassar até I/O; Domain síncrono independente |
 | xUnit 2.9.3 + WebApplicationFactory 10.0.14 | Tests | Unitários e integração HTTP + SQLite temporário | Terceiro projeto só de testes; banco isolado por teste |
+| Angular 22.2.x standalone + TypeScript | `src/FinTrack.Web` | SPA de página única para operar o MVP | Sem referência aos projetos .NET; regras permanecem na API; ADR-009 |
+| Angular HttpClient | `src/FinTrack.Web/app/core` | Cliente tipado da API HTTP | Proxy local para a API; sem duplicar regras de domínio |
+| CSS responsivo próprio | `src/FinTrack.Web/app` | Tema black e componentes visuais | Sem biblioteca visual adicional neste incremento |
+| Vitest | `src/FinTrack.Web` | Testes unitários do frontend | Execução não interativa no pipeline local |
 | Git | DevOps | Versionamento | Não criar commits sem autorização |
 
 Os pacotes da Infrastructure incluem FluentValidation 12.2.0. O `RequestValidator` usa `ValidateAsync` explicitamente e gera `ValidationProblem` (HTTP 400). O Domain conserva as invariantes e o SQLite protege a unicidade. A criação/evolução do banco é feita via migrations versionadas (`dotnet ef database update` no ambiente de desenvolvimento). A API não executa migrations no startup. As migrations desta revisão foram escritas manualmente e exigem verificação com SDK .NET 10 (`has-pending-model-changes`), além de testes de integração executados antes de produção.
@@ -24,3 +28,4 @@ ADR-003 centraliza regras de nome em `NomeConta` e mapeamento HTTP em `ResultHtt
 ADR-005 aprova os contratos, paginação, Guid e políticas de nome/renomeação da F01.
 ADR-006 define a transição segura das Contas legadas. ADR-007 define estados e
 reativação. ADR-008 define valores, datas, cancelamento, consultas e consolidação.
+ADR-009 posiciona a SPA Angular como cliente independente da API.
