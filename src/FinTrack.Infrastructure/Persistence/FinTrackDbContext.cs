@@ -16,7 +16,16 @@ public sealed class FinTrackDbContext(DbContextOptions<FinTrackDbContext> option
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Nome).HasMaxLength(100).IsRequired();
             entity.Property(x => x.NomeNormalizado).HasMaxLength(100).IsRequired();
+            entity.Property(x => x.CategoriaId).HasColumnName("categoria_id");
+            entity.Property(x => x.Classificador)
+                .HasColumnName("classificador").HasConversion<string>().HasMaxLength(3);
+            entity.Property(x => x.Ativa).HasColumnName("ativa").IsRequired();
             entity.HasIndex(x => x.NomeNormalizado).IsUnique();
+            entity.HasIndex(x => x.CategoriaId);
+            entity.HasOne<Categoria>()
+                .WithMany()
+                .HasForeignKey(x => x.CategoriaId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Categoria>(entity =>
