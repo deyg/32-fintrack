@@ -7,6 +7,7 @@ public sealed class FinTrackDbContext(DbContextOptions<FinTrackDbContext> option
 {
     public DbSet<Conta> Contas => Set<Conta>();
     public DbSet<Categoria> Categorias => Set<Categoria>();
+    public DbSet<Lancamento> Lancamentos => Set<Lancamento>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +39,22 @@ public sealed class FinTrackDbContext(DbContextOptions<FinTrackDbContext> option
             entity.Property(x => x.Natureza).HasColumnName("natureza").HasConversion<string>().HasMaxLength(10).IsRequired();
             entity.Property(x => x.Ativa).HasColumnName("ativa").IsRequired();
             entity.HasIndex(x => x.NomeNormalizado).IsUnique();
+        });
+
+        modelBuilder.Entity<Lancamento>(entity =>
+        {
+            entity.ToTable("lancamentos");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.ContaId).HasColumnName("conta_id");
+            entity.Property(x => x.Valor).HasColumnName("valor").HasPrecision(18, 2);
+            entity.Property(x => x.DataRealizacao).HasColumnName("data_realizacao");
+            entity.Property(x => x.Descricao).HasColumnName("descricao").HasMaxLength(200);
+            entity.Property(x => x.Situacao).HasColumnName("situacao").HasConversion<string>().HasMaxLength(10);
+            entity.Property(x => x.DataCancelamento).HasColumnName("data_cancelamento");
+            entity.Property(x => x.MotivoCancelamento).HasColumnName("motivo_cancelamento").HasMaxLength(200);
+            entity.HasIndex(x => new { x.DataRealizacao, x.Id });
+            entity.HasOne<Conta>().WithMany().HasForeignKey(x => x.ContaId).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
