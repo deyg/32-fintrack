@@ -1,6 +1,9 @@
-# FinTrack — PoC do Harness v1.8
+# FinTrack — MVP do Harness v1.8
 
-Implementação de `SPEC-001` (Cadastrar Conta) em .NET 10, ASP.NET Core Minimal API, EF Core + SQLite e Result Pattern simples. FluentValidation 12.2.0 valida `CriarContaRequest` na Infrastructure antes do UseCase; o Domain continua protegendo invariantes. Duas assemblies de produção (`Core` e `Infrastructure`) + projeto de testes.
+MVP financeiro em .NET 10, ASP.NET Core Minimal API, EF Core + SQLite,
+FluentValidation e Result Pattern. Implementa Categorias, Contas, Lançamentos,
+cancelamento, consultas, consolidação e seed idempotente, preservando a transição
+das Contas legadas descrita na ADR-006.
 
 ## Executar (requer .NET SDK 10 e NuGet)
 
@@ -14,6 +17,15 @@ dotnet ef database update --project src/FinTrack.Infrastructure --startup-projec
 dotnet test FinTrack.slnx --no-build
 dotnet run --project src/FinTrack.Infrastructure
 ```
+
+Para carregar explicitamente as onze categorias iniciais após aplicar migrations:
+
+```bash
+dotnet run --project src/FinTrack.Infrastructure -- --inicializar-categorias
+```
+
+Rotas principais: `/categorias`, `/contas`, `/lancamentos`, `/consolidados` e `/health`.
+As evidências finais estão em `sdd/progresso/AUDITORIA-MVP.md`.
 
 O banco SQLite `fintrack.db` é criado/atualizado explicitamente com `dotnet ef database update`, sem `EnsureCreatedAsync` no startup. A migração inicial está em `Persistence/Migrations/`, e o projeto de testes aplica migrations em banco isolado. As migrations foram escritas manualmente porque o SDK .NET não está disponível neste ambiente; valide a consistência do modelo com `dotnet ef migrations has-pending-model-changes` antes de utilizá-las. Para produção, revise scripts SQL ou use migration bundles no pipeline de deploy; não migre automaticamente na inicialização da API.
 
