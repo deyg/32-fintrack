@@ -116,6 +116,29 @@
 | FT-F03-039 | F03 | src/FinTrack.Infrastructure/Adapters/Inbound/Http/Contas/ContasEndpoints.cs | SPEC-F03 | validação do commit | Aprovado | c7294e91fd0d417f52685a899d3fbcbd8b71cff6 | Concluído |
 | FT-F03-040 | F03 | src/FinTrack.Infrastructure/Program.cs | SPEC-F03 | validação do commit | Aprovado | 314b7731addf719c5a53ba02edff950869048178 | Concluído |
 | FT-F03-041 | F03 | tests/FinTrack.Tests/ContaTests.cs | SPEC-F03 | validação do commit | Aprovado | c0f8b67c2d182a8b97dfe2347c6e61adfde2b977 | Concluído |
+| FT-F10-001 | F10 | src/FinTrack.Web/.editorconfig | SPEC-F10 | build Angular + 4/4 testes | Aprovado | cc16049d20269c210ec33ab320a7f996899eaffd | Concluído |
+| FT-F10-002 | F10 | src/FinTrack.Web/.gitignore | SPEC-F10 | build Angular + 4/4 testes | Aprovado | d860db191a9d7784a2c6dbb47ce01221288611d1 | Concluído |
+| FT-F10-003 | F10 | src/FinTrack.Web/.prettierrc | SPEC-F10 | build Angular + 4/4 testes | Aprovado | 956825580a1fd40d0589afdc1ad141ddf9037cf2 | Concluído |
+| FT-F10-004 | F10 | src/FinTrack.Web/package.json | SPEC-F10 | npm audit produção 0 + build | Aprovado | 39b376ae6ddd33af5cc9d19272c133822505c7cd | Concluído |
+| FT-F10-005 | F10 | src/FinTrack.Web/package-lock.json | SPEC-F10 | npm audit produção 0 + build | Aprovado | a96f738a4344fba1bba678521a9fcfc6ec9bc4ec | Concluído |
+| FT-F10-006 | F10 | src/FinTrack.Web/angular.json | SPEC-F10 | build Angular | Aprovado | 3864a0ff6e6294edc31ed81750cd1bdd77eb8aad | Concluído |
+| FT-F10-007 | F10 | src/FinTrack.Web/tsconfig.json | SPEC-F10 | build Angular | Aprovado | c76384de95b9c2442bc945283f8176264d4e3db7 | Concluído |
+| FT-F10-008 | F10 | src/FinTrack.Web/tsconfig.app.json | SPEC-F10 | build Angular | Aprovado | 25f3b3b0b3ebe0402fd93dfc8b1191f2110a5615 | Concluído |
+| FT-F10-009 | F10 | src/FinTrack.Web/tsconfig.spec.json | SPEC-F10 | 4/4 testes Angular | Aprovado | a7fcbbab12c7296ef709e1092e5e29ce82b53813 | Concluído |
+| FT-F10-010 | F10 | src/FinTrack.Web/proxy.conf.json | SPEC-F10 | health e categorias via proxy 200 | Aprovado | f11fe9279a12967436a377e0598e04c6948977ed | Concluído |
+| FT-F10-011 | F10 | src/FinTrack.Web/src/main.ts | SPEC-F10 | build Angular | Aprovado | ca9480d596692432a58e010afb480665f72c339f | Concluído |
+| FT-F10-012 | F10 | src/FinTrack.Web/src/index.html | SPEC-F10 | SPA HTTP 200 | Aprovado | 17873a620e128de7ebdefe33bac5374c247f4d58 | Concluído |
+| FT-F10-013 | F10 | src/FinTrack.Web/src/styles.css | SPEC-F10 | build Angular | Aprovado | e9cb21e49c93d420bfd3e64f223bf32e61574933 | Concluído |
+| FT-F10-014 | F10 | src/FinTrack.Web/src/app/app.config.ts | SPEC-F10 | build + testes Angular | Aprovado | 5891e5a2d5f42b32a9c5808ba8f289c8125621b4 | Concluído |
+| FT-F10-015 | F10 | src/FinTrack.Web/src/app/core/fintrack.models.ts | SPEC-F10 | build TypeScript | Aprovado | 420cc9be1f3441a47f646010fcf8155b0fe41f8a | Concluído |
+| FT-F10-016 | F10 | src/FinTrack.Web/src/app/core/fintrack-api.service.ts | SPEC-F10 | 2 testes do cliente HTTP | Aprovado | 4cc92ad1e84c69c5f64c2458e4bba8742a0d0f8f | Concluído |
+| FT-F10-017 | F10 | src/FinTrack.Web/src/app/app.ts | SPEC-F10 | build + testes Angular | Aprovado | 1cd4c1553f90e1c23ecb7297429c285bb8a605bb | Concluído |
+| FT-F10-018 | F10 | src/FinTrack.Web/src/app/app.html | SPEC-F10 | build + teste de renderização | Aprovado | 069506cfbcafa492d5b205c5f6c3403af856f73f | Concluído |
+| FT-F10-019 | F10 | src/FinTrack.Web/src/app/app.css | SPEC-F10 | build dentro dos budgets | Aprovado | 9ea2ed2440578e9805d5e78c849412b682044e7f | Concluído |
+| FT-F10-020 | F10 | src/FinTrack.Web/src/app/app.spec.ts | SPEC-F10 | 2/2 testes do painel | Aprovado | 7928e1d5fb380ef17389147bc651e10fa8360541 | Concluído |
+| FT-F10-021 | F10 | src/FinTrack.Web/src/app/core/fintrack-api.service.spec.ts | SPEC-F10 | 2/2 testes do cliente | Aprovado | cd8d7ca8717907672f17b937873e30d98dce4f0f | Concluído |
+| FT-F10-022 | F10 | src/FinTrack.Web/public/favicon.ico | SPEC-F10 | asset incluído no build | Aprovado | 8beab653998fad63ab19f1e6a346dc7b1008e2bd | Concluído |
+| FT-F10-023 | F10 | src/FinTrack.Web/README.md | SPEC-F10 | comandos documentados executados | Aprovado | 7c0cc25f628dae212adb2bdf889fe793bd86f2c5 | Concluído |
 
 ## Modelo de registro por passo
 
