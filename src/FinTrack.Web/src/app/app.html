@@ -1,0 +1,293 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">FT</span>
+      <div>
+        <strong>FinTrack</strong>
+        <small>Controle financeiro</small>
+      </div>
+    </div>
+
+    <nav aria-label="Navegação principal">
+      @for (secao of secoes; track secao.id) {
+        <button
+          type="button"
+          class="nav-item"
+          [class.active]="secaoAtiva() === secao.id"
+          (click)="selecionarSecao(secao.id)"
+        >
+          <span class="nav-dot"></span>
+          <span>
+            <strong>{{ secao.rotulo }}</strong>
+            <small>{{ secao.legenda }}</small>
+          </span>
+        </button>
+      }
+    </nav>
+
+    <div class="api-status" [class.offline]="!apiOnline()">
+      <span class="status-dot"></span>
+      <div>
+        <strong>{{ apiOnline() ? 'API conectada' : 'API indisponível' }}</strong>
+        <small>127.0.0.1:5100</small>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">PAINEL FINANCEIRO</span>
+        <h1>{{ tituloSecao() }}</h1>
+      </div>
+      <button type="button" class="button ghost" (click)="carregarTudo()" [disabled]="carregando()">
+        <span class="refresh" [class.spinning]="carregando()">↻</span>
+        Atualizar dados
+      </button>
+    </header>
+
+    @if (secaoAtiva() === 'visao-geral') {
+      <section class="page-section dashboard">
+        <div class="hero panel">
+          <div>
+            <span class="eyebrow accent">CONTROLE EM TEMPO REAL</span>
+            <h2>Seu dinheiro, sem ruído.</h2>
+            <p>Acompanhe receitas, despesas e resultado em uma visão direta do período.</p>
+          </div>
+          <form class="period-form" (ngSubmit)="carregarConsolidado()">
+            <label>
+              De
+              <input type="date" name="inicioResumo" [(ngModel)]="periodo.dataInicial" required />
+            </label>
+            <label>
+              Até
+              <input type="date" name="fimResumo" [(ngModel)]="periodo.dataFinal" required />
+            </label>
+            <button class="button primary" type="submit">Aplicar período</button>
+          </form>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card revenue">
+            <span>Receitas realizadas</span>
+            <strong>{{ (consolidado()?.receitas ?? 0) | currency: 'BRL' }}</strong>
+            <small>{{ totalReceitasAtivas() }} categorias de receita ativas</small>
+          </article>
+          <article class="metric-card expense">
+            <span>Despesas realizadas</span>
+            <strong>{{ (consolidado()?.despesas ?? 0) | currency: 'BRL' }}</strong>
+            <small>{{ totalDespesasAtivas() }} categorias de despesa ativas</small>
+          </article>
+          <article class="metric-card balance" [class.negative]="(consolidado()?.resultado ?? 0) < 0">
+            <span>Resultado do período</span>
+            <strong>{{ (consolidado()?.resultado ?? 0) | currency: 'BRL' }}</strong>
+            <small>Receitas menos despesas válidas</small>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel data-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">DISTRIBUIÇÃO</span>
+                <h3>Por categoria</h3>
+              </div>
+              <span class="count">{{ consolidado()?.porCategoria?.length ?? 0 }}</span>
+            </div>
+            @if (consolidado()?.porCategoria?.length) {
+              <div class="ranking-list">
+                @for (item of consolidado()!.porCategoria; track item.id ?? item.nome) {
+                  <div class="ranking-item">
+                    <span class="ranking-icon">{{ item.nome.slice(0, 1).toUpperCase() }}</span>
+                    <div><strong>{{ item.nome }}</strong><small>Categoria</small></div>
+                    <b>{{ item.total | currency: 'BRL' }}</b>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="empty-state"><span>◇</span><p>Sem movimentações no período.</p></div>
+            }
+          </article>
+
+          <article class="panel data-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">CLASSIFICAÇÃO</span>
+                <h3>Por perfil de despesa</h3>
+              </div>
+              <span class="count">{{ consolidado()?.porClassificador?.length ?? 0 }}</span>
+            </div>
+            @if (consolidado()?.porClassificador?.length) {
+              <div class="ranking-list">
+                @for (item of consolidado()!.porClassificador; track item.nome) {
+                  <div class="ranking-item">
+                    <span class="ranking-icon accent-bg">{{ item.nome }}</span>
+                    <div><strong>{{ item.nome }}</strong><small>Classificador</small></div>
+                    <b>{{ item.total | currency: 'BRL' }}</b>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="empty-state"><span>◇</span><p>Sem despesas classificadas no período.</p></div>
+            }
+          </article>
+        </div>
+      </section>
+    }
+
+    @if (secaoAtiva() === 'categorias') {
+      <section class="page-section">
+        <div class="section-intro">
+          <div><span class="eyebrow accent">ESTRUTURA</span><h2>Categorias</h2><p>Organize suas rubricas por natureza e controle sua disponibilidade.</p></div>
+          <div class="section-stat"><strong>{{ categorias().length }}</strong><span>categorias cadastradas</span></div>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="panel form-panel" #categoriaForm="ngForm" (ngSubmit)="criarCategoria()">
+            <div class="panel-heading"><div><span class="eyebrow">NOVA CATEGORIA</span><h3>Adicionar categoria</h3></div></div>
+            <label>Nome<input name="nomeCategoria" [(ngModel)]="novaCategoria.nome" maxlength="100" placeholder="Ex.: Viagens" required /></label>
+            <label>Natureza<select name="naturezaCategoria" [(ngModel)]="novaCategoria.natureza"><option value="DESPESA">Despesa</option><option value="RECEITA">Receita</option></select></label>
+            <p class="form-hint">A natureza não pode ser alterada depois da criação.</p>
+            <button class="button primary full" type="submit" [disabled]="categoriaForm.invalid || carregando()">Criar categoria</button>
+          </form>
+
+          <article class="panel table-panel wide">
+            <div class="panel-heading"><div><span class="eyebrow">CATÁLOGO</span><h3>Todas as categorias</h3></div><button class="icon-button" type="button" (click)="carregarCategorias()">↻</button></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Nome</th><th>Natureza</th><th>Estado</th><th class="actions">Ações</th></tr></thead>
+                <tbody>
+                  @for (categoria of categorias(); track categoria.id) {
+                    <tr [class.muted-row]="!categoria.ativa">
+                      <td><div class="entity-cell"><span class="entity-avatar">{{ categoria.nome.slice(0, 1) }}</span><strong>{{ categoria.nome }}</strong></div></td>
+                      <td><span class="pill" [class.income]="categoria.natureza === 'RECEITA'">{{ categoria.natureza }}</span></td>
+                      <td><span class="state" [class.inactive]="!categoria.ativa"><i></i>{{ categoria.ativa ? 'Ativa' : 'Inativa' }}</span></td>
+                      <td class="actions"><button type="button" class="text-button" (click)="renomearCategoria(categoria)">Renomear</button><button type="button" class="text-button danger" (click)="alternarCategoria(categoria)">{{ categoria.ativa ? 'Inativar' : 'Reativar' }}</button></td>
+                    </tr>
+                  } @empty {
+                    <tr><td colspan="4"><div class="empty-state compact">Nenhuma categoria encontrada.</div></td></tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    }
+
+    @if (secaoAtiva() === 'contas') {
+      <section class="page-section">
+        <div class="section-intro">
+          <div><span class="eyebrow accent">RUBRICAS</span><h2>Contas</h2><p>Contas são destinos financeiros reutilizáveis, não contas bancárias.</p></div>
+          <div class="section-stat"><strong>{{ contas().length }}</strong><span>contas na consulta</span></div>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="panel form-panel" #contaForm="ngForm" (ngSubmit)="criarConta()">
+            <div class="panel-heading"><div><span class="eyebrow">NOVA CONTA</span><h3>Adicionar rubrica</h3></div></div>
+            <label>Nome<input name="nomeConta" [(ngModel)]="novaConta.nome" maxlength="100" placeholder="Ex.: Academia" required /></label>
+            <label>Categoria<select name="categoriaConta" [(ngModel)]="novaConta.categoriaId" required><option value="" disabled>Selecione uma categoria</option>@for (categoria of categoriasAtivas(); track categoria.id) {<option [value]="categoria.id">{{ categoria.nome }} · {{ categoria.natureza }}</option>}</select></label>
+            @if (categoriaNovaConta()?.natureza === 'DESPESA') {
+              <label>Classificador<select name="classificadorConta" [(ngModel)]="novaConta.classificador" required>@for (item of classificadores; track item) {<option [value]="item">{{ item }}</option>}</select></label>
+            } @else if (categoriaNovaConta()?.natureza === 'RECEITA') {
+              <div class="info-box">Receitas não recebem classificador.</div>
+            }
+            <button class="button primary full" type="submit" [disabled]="contaForm.invalid || carregando()">Criar conta</button>
+          </form>
+
+          <article class="panel table-panel wide">
+            <div class="panel-heading stacked-mobile">
+              <div><span class="eyebrow">CONTAS</span><h3>Rubricas cadastradas</h3></div>
+              <div class="inline-filters">
+                <select aria-label="Filtrar por categoria" [(ngModel)]="filtroContas.categoriaId" (change)="carregarContas(false)"><option value="">Todas as categorias</option>@for (categoria of categorias(); track categoria.id) {<option [value]="categoria.id">{{ categoria.nome }}</option>}</select>
+                <select aria-label="Filtrar por estado" [(ngModel)]="filtroContas.ativa" (change)="carregarContas(false)"><option value="">Todos os estados</option><option value="true">Ativas</option><option value="false">Inativas</option></select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Conta</th><th>Categoria</th><th>Classificador</th><th>Estado</th><th class="actions">Ações</th></tr></thead>
+                <tbody>
+                  @for (conta of contas(); track conta.id) {
+                    <tr [class.muted-row]="!conta.ativa">
+                      <td><div class="entity-cell"><span class="entity-avatar square">{{ conta.nome.slice(0, 1) }}</span><strong>{{ conta.nome }}</strong></div></td>
+                      <td>
+                        @if (conta.categoriaId) { {{ nomeCategoria(conta.categoriaId) }} }
+                        @else { <select class="compact-select" aria-label="Classificar conta legada" (change)="classificarLegada(conta, $any($event.target).value)"><option value="">Classificar…</option>@for (categoria of categoriasAtivas(); track categoria.id) {<option [value]="categoria.id">{{ categoria.nome }}</option>}</select> }
+                      </td>
+                      <td>
+                        @if (conta.classificador) { <select class="compact-select" [value]="conta.classificador" (change)="alterarClassificador(conta, $any($event.target).value)">@for (item of classificadores; track item) {<option [value]="item">{{ item }}</option>}</select> }
+                        @else { <span class="dash">—</span> }
+                      </td>
+                      <td><span class="state" [class.inactive]="!conta.ativa"><i></i>{{ conta.ativa ? 'Ativa' : 'Inativa' }}</span></td>
+                      <td class="actions"><button type="button" class="text-button" (click)="renomearConta(conta)">Renomear</button><button type="button" class="text-button danger" (click)="alternarConta(conta)">{{ conta.ativa ? 'Inativar' : 'Reativar' }}</button></td>
+                    </tr>
+                  } @empty {
+                    <tr><td colspan="5"><div class="empty-state compact">Nenhuma conta encontrada.</div></td></tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    }
+
+    @if (secaoAtiva() === 'lancamentos') {
+      <section class="page-section">
+        <div class="section-intro">
+          <div><span class="eyebrow accent">MOVIMENTAÇÕES</span><h2>Lançamentos</h2><p>Registre fatos realizados e preserve o histórico por cancelamento lógico.</p></div>
+          <div class="section-stat"><strong>{{ lancamentos().length }}</strong><span>lançamentos na consulta</span></div>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="panel form-panel" #lancamentoForm="ngForm" (ngSubmit)="registrarLancamento()">
+            <div class="panel-heading"><div><span class="eyebrow">NOVO LANÇAMENTO</span><h3>Registrar movimento</h3></div></div>
+            <label>Conta<select name="contaLancamento" [(ngModel)]="novoLancamento.contaId" required><option value="" disabled>Selecione uma conta</option>@for (conta of contasAtivas(); track conta.id) {<option [value]="conta.id">{{ conta.nome }} · {{ nomeCategoria(conta.categoriaId) }}</option>}</select></label>
+            <div class="form-row"><label>Valor<input type="number" name="valorLancamento" [(ngModel)]="novoLancamento.valor" min="0.01" step="0.01" placeholder="0,00" required /></label><label>Realização<input type="date" name="dataLancamento" [(ngModel)]="novoLancamento.dataRealizacao" required /></label></div>
+            <label>Descrição<textarea name="descricaoLancamento" [(ngModel)]="novoLancamento.descricao" maxlength="200" rows="3" placeholder="Descrição opcional"></textarea></label>
+            <button class="button primary full" type="submit" [disabled]="lancamentoForm.invalid || carregando()">Registrar lançamento</button>
+          </form>
+
+          <article class="panel table-panel wide">
+            <div class="panel-heading stacked-mobile"><div><span class="eyebrow">HISTÓRICO</span><h3>Movimentações</h3></div><button type="button" class="button ghost small" (click)="carregarLancamentos()">Aplicar filtros</button></div>
+            <div class="filter-bar">
+              <input type="date" aria-label="Data inicial" [(ngModel)]="filtroLancamentos.dataInicial" />
+              <input type="date" aria-label="Data final" [(ngModel)]="filtroLancamentos.dataFinal" />
+              <select aria-label="Filtrar conta" [(ngModel)]="filtroLancamentos.contaId"><option value="">Todas as contas</option>@for (conta of contas(); track conta.id) {<option [value]="conta.id">{{ conta.nome }}</option>}</select>
+              <select aria-label="Filtrar situação" [(ngModel)]="filtroLancamentos.situacao"><option value="">Todas as situações</option><option value="REALIZADO">Realizados</option><option value="CANCELADO">Cancelados</option></select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Data</th><th>Conta</th><th>Descrição</th><th>Situação</th><th class="money">Valor</th><th class="actions">Ação</th></tr></thead>
+                <tbody>
+                  @for (lancamento of lancamentos(); track lancamento.id) {
+                    <tr [class.muted-row]="lancamento.situacao === 'CANCELADO'">
+                      <td>{{ lancamento.dataRealizacao | date: 'dd/MM/yyyy':'UTC' }}</td>
+                      <td><strong>{{ nomeConta(lancamento.contaId) }}</strong><small class="cell-subtitle">{{ nomeCategoria(categoriaDaConta(lancamento.contaId)) }}</small></td>
+                      <td>{{ lancamento.descricao || 'Sem descrição' }}</td>
+                      <td><span class="pill status-pill" [class.cancelled]="lancamento.situacao === 'CANCELADO'">{{ lancamento.situacao }}</span></td>
+                      <td class="money" [class.negative-money]="naturezaConta(lancamento.contaId) === 'DESPESA'">{{ lancamento.valor | currency: 'BRL' }}</td>
+                      <td class="actions">@if (lancamento.situacao === 'REALIZADO') {<button type="button" class="text-button danger" (click)="cancelarLancamento(lancamento)">Cancelar</button>} @else {<span class="dash">—</span>}</td>
+                    </tr>
+                  } @empty {
+                    <tr><td colspan="6"><div class="empty-state compact">Nenhum lançamento encontrado.</div></td></tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    }
+  </main>
+
+  @if (mensagem(); as aviso) {
+    <div class="toast" [class.error]="aviso.tom === 'erro'" role="status">
+      <span>{{ aviso.tom === 'sucesso' ? '✓' : '!' }}</span>
+      <p>{{ aviso.texto }}</p>
+      <button type="button" aria-label="Fechar mensagem" (click)="fecharMensagem()">×</button>
+    </div>
+  }
+
+  @if (carregando()) { <div class="loading-bar" aria-label="Carregando"></div> }
+</div>
