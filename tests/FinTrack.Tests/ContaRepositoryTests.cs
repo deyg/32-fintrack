@@ -3,6 +3,7 @@ using FinTrack.Infrastructure.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using FinTrack.Core.Domain.Enums;
 
 namespace FinTrack.Tests;
 
@@ -25,15 +26,19 @@ public sealed class ContaRepositoryTests
 
         await using (var db = new FinTrackDbContext(options))
         {
+            var categoria = Categoria.Criar("Receitas", NaturezaCategoria.Receita).Value;
+            db.Categorias.Add(categoria);
+            await db.SaveChangesAsync();
             var inserted = await new ContaRepository(db).TryAddAsync(
-                Conta.Criar("Conta Corrente").Value, CancellationToken.None);
+                Conta.Criar(categoria.Id, categoria.Natureza, "Conta Corrente", null).Value, CancellationToken.None);
             Assert.True(inserted);
         }
 
         await using (var db = new FinTrackDbContext(options))
         {
+            var categoria = await db.Categorias.SingleAsync();
             var inserted = await new ContaRepository(db).TryAddAsync(
-                Conta.Criar("conta corrente").Value, CancellationToken.None);
+                Conta.Criar(categoria.Id, categoria.Natureza, "conta corrente", null).Value, CancellationToken.None);
             Assert.False(inserted);
         }
     }
