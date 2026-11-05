@@ -40,4 +40,8 @@ public sealed class Categoria
         NomeNormalizado = nomeResult.Value.Normalizado;
         return Result.Success();
     }
+
+    public void Inativar() => Ativa = false;
+
+    public void Reativar() => Ativa = true;
 }
