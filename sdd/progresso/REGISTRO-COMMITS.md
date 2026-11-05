@@ -141,6 +141,8 @@
 | FT-F10-023 | F10 | src/FinTrack.Web/README.md | SPEC-F10 | comandos documentados executados | Aprovado | 7c0cc25f628dae212adb2bdf889fe793bd86f2c5 | Concluído |
 | FT-F10-024 | F10 | src/FinTrack.Web/src/app/app.ts | SPEC-F10 | build Angular + 5/5 testes | Aprovado | 655629b14903aa3f5762277fbda0acb547ff5a28 | Concluído |
 | FT-F10-025 | F10 | src/FinTrack.Web/src/app/app.spec.ts | SPEC-F10 | regressão DESPESA → combo OF/OV/NOF/NOV | Aprovado | eba73a8ae8fed18bd58e1d46413721706f26afde | Concluído |
+| FT-F10-026 | F10 | src/FinTrack.Web/src/app/app.html | SPEC-F10 | build Angular + 5/5 testes | Aprovado | 8060aef7191f500a00870a52739e43656cfb2e65 | Concluído |
+| FT-F10-027 | F10 | src/FinTrack.Web/src/app/app.spec.ts | SPEC-F10 | classificador em texto e ausência de combo na lista | Aprovado | b7b1399f2721c3e9b35865086017badba5ac56e5 | Concluído |
 
 ## Modelo de registro por passo
 
