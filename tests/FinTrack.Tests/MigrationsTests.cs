@@ -25,7 +25,8 @@ public sealed class MigrationsTests
         {
             "20261105000100_InitialCreate",
             "20261105120623_AddCategorias",
-            "20261105122654_ExpandContasComCategoria"
+            "20261105122654_ExpandContasComCategoria",
+            "20261105160313_AddLancamentos"
         }, aplicadas);
         Assert.True(await db.Database.CanConnectAsync());
         Assert.Equal(0, await db.Contas.CountAsync());
