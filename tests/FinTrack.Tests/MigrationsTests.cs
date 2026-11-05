@@ -21,8 +21,13 @@ public sealed class MigrationsTests
         await db.Database.MigrateAsync();
 
         var aplicadas = await db.Database.GetAppliedMigrationsAsync();
-        Assert.Equal(new[] { "20261105000100_InitialCreate" }, aplicadas);
+        Assert.Equal(new[]
+        {
+            "20261105000100_InitialCreate",
+            "20261105120623_AddCategorias"
+        }, aplicadas);
         Assert.True(await db.Database.CanConnectAsync());
         Assert.Equal(0, await db.Contas.CountAsync());
+        Assert.Equal(0, await db.Categorias.CountAsync());
     }
 }
