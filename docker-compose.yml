@@ -33,7 +33,7 @@ services:
       inicializacao:
         condition: service_completed_successfully
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__FinTrack: Data Source=/dados/fintrack.db
     ports:
       - "8080:8080"
