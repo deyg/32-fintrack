@@ -10,7 +10,7 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 | FluentValidation 12.2.0 | Infrastructure/Adapters/Inbound/Http | Validação antecipada de `CriarContaRequest`, antes do UseCase | Sem dependência no Core; regra de nome delegada a Domain/ValueObjects/NomeConta (ADR-003) |
 | Políticas de nome (`NomeConta`, `NomeCategoria`) | Core/Domain/ValueObjects | Fonte única de validação e normalização | Domain independente de FluentValidation; Categoria conforme ADR-005 |
 | Result Pattern simples | Core/Domain | `Success`, `Failure`, `Match` | Sem HTTP; sem `Bind`/`Map` |
-| EF Core SQLite 10.0.14 | Infrastructure/Persistence | Persistência de Categoria, Conta e Lançamento | EF Core fora do Core; migrations explícitas; sem cascade destrutivo |
+| EF Core SQLite 10.0.14 | Infrastructure/Persistence | Persistência de Categoria, Conta, Lançamento e marcador `CargaInicial` | EF Core fora do Core; migrations explícitas; sem cascade destrutivo; carga de demonstração idempotente via tabela de controle |
 | SQLite | Infrastructure/Persistence | Banco local | Restrição `UNIQUE` em NomeNormalizado |
 | EF Core Migrations + dotnet-ef 10.0.14 | Infrastructure/Persistence/Migrations + Deploy | Evoluir esquema de forma versionada | Sem `EnsureCreated`; aplicar antes de subir a API; revisar migrações |
 | Native DI | Infrastructure | Wiring | Sem MediatR |
@@ -21,7 +21,7 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 | Angular HttpClient | `src/FinTrack.Web/app/core` | Cliente tipado da API HTTP | Proxy local para a API; sem duplicar regras de domínio |
 | CSS responsivo próprio | `src/FinTrack.Web/app` | Tema black e componentes visuais | Sem biblioteca visual adicional neste incremento |
 | Vitest | `src/FinTrack.Web` | Testes unitários do frontend | Execução não interativa no pipeline local |
-| Docker Engine 28 + Docker Compose 2 | Ambiente / raiz do repositório | Build e execução local da API, migrations explícitas e volume SQLite | `Dockerfile` somente para Infrastructure; Compose inicia `migracoes` antes de `api`; volume `fintrack-dados`; sem Core, SPA ou Scalar em produção; ADR-011 |
+| Docker Engine 28 + Docker Compose 2 | Ambiente / raiz do repositório | Build e execução local da API, migrations, carga inicial explícita e volume SQLite | `Dockerfile` somente para Infrastructure; Compose inicia `migracoes`, depois `inicializacao` e então `api`; volume `fintrack-dados`; carga de demonstração não executa no startup da API; sem Core, SPA ou Scalar em produção; ADR-011/012 |
 | Git | DevOps | Versionamento | Não criar commits sem autorização |
 
 Os pacotes da Infrastructure incluem FluentValidation 12.2.0. O `RequestValidator` usa `ValidateAsync` explicitamente e gera `ValidationProblem` (HTTP 400). O Domain conserva as invariantes e o SQLite protege a unicidade. A criação/evolução do banco é feita via migrations versionadas (`dotnet ef database update` no ambiente de desenvolvimento). A API não executa migrations no startup. As migrations desta revisão foram escritas manualmente e exigem verificação com SDK .NET 10 (`has-pending-model-changes`), além de testes de integração executados antes de produção.
@@ -31,4 +31,5 @@ ADR-005 aprova os contratos, paginação, Guid e políticas de nome/renomeação
 ADR-006 define a transição segura das Contas legadas. ADR-007 define estados e
 reativação. ADR-008 define valores, datas, cancelamento, consultas e consolidação.
 ADR-009 posiciona a SPA Angular como cliente independente da API.
-ADR-011 define a execução local em Docker da API e das migrations.
+ADR-011 define a execução local em Docker da API e das migrations; ADR-012
+define a carga única de dados de demonstração no Compose.

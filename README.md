@@ -15,8 +15,11 @@ Pré-requisito: Docker Desktop com o Engine em execução.
 docker compose up --build -d
 ```
 
-O Compose cria o volume nomeado `fintrack-dados`, executa as migrations em um
-serviço efêmero antes da API e publica a aplicação em:
+O Compose cria o volume nomeado `fintrack-dados`, executa migrations e, em
+seguida, inicializa uma vez as onze Categorias e os dados fictícios de Contas e
+Lançamentos antes de iniciar a API. A carga é registrada no banco persistente;
+reinícios não duplicam nem recriam exemplos editados ou removidos. A API fica
+disponível em:
 
 ```text
 http://localhost:8080/health
@@ -28,6 +31,7 @@ Verificar serviços e logs:
 docker compose ps
 docker compose logs api
 docker compose logs migracoes
+docker compose logs inicializacao
 ```
 
 Parar sem apagar o banco:
@@ -43,7 +47,8 @@ docker compose down -v
 ```
 
 O Compose usa `Production`; por isso `/scalar` e `/openapi/v1.json` não são
-publicados nesse ambiente. A API nunca executa migrations no próprio startup.
+publicados nesse ambiente. A carga de demonstração é exclusiva do serviço local
+`inicializacao`; a API nunca executa migrations ou seed no próprio startup.
 
 ## Executar localmente
 

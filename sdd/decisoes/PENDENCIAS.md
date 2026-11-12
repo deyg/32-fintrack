@@ -1,6 +1,8 @@
 # Pendências para fechamento das SPECs
 
-**Não constituem decisões aprovadas.** Usar o código DP em ADRs subsequentes e em relatórios.
+As pendências abaixo não constituem decisões aprovadas, exceto quando a ação
+está explicitamente marcada como **Resolvida**. Usar o código DP em ADRs e
+relatórios.
 
 | ID | Tema | Features impactadas | Próxima ação |
 |---|---|---|---|
@@ -14,5 +16,6 @@
 | DP-08 | Paginação, filtros e ordenação | F01, F03, F07 | Definir contrato de consulta. |
 | DP-09 | Rotas, contratos e política HTTP das novas operações | Todas | Aprovar OpenAPI por feature. |
 | DP-10 | Data futura, motivo e data de cancelamento | F05, F06 | Ratificar regras de realização/cancelamento. |
+| DP-11 | Carga única de demonstração de Contas e Lançamentos | F13 | Resolvida em 2026-11-12 por aprovação do usuário; ver `REQUISITOS.md` seção 6.1, SPEC-F13 e ADR-012. |
 
 **Política de execução:** enquanto uma decisão impactar o comportamento de uma feature e estiver pendente, a Skill deve apresentar a alternativa e impedir que a suposição seja promovida a regra permanente. Avançar somente com partes não bloqueadas.

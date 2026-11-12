@@ -37,6 +37,17 @@
 | FT-F09-001 | F09 | `InicializadorCategorias.cs` | RF-015/RN-024 | `dotnet build` | Aprovado | `58b90a02dcf38659a09986fb896b40fcd17d73c5` | Concluído |
 | FT-F09-002 | F09 | `Program.cs` | RF-015 | `dotnet build` | Aprovado | `b5745c1be8678f3a23bbdd281cef404cae3d382f` | Concluído |
 | FT-F09-003 | F09 | `InicializadorCategoriasTests.cs` | RF-015/RN-024 | filtro `InicializadorCategoriasTests` | 2 aprovados | `32fa77eef9ade9164a0b09a211564aa2414c3f2c` | Concluído |
+| FT-F13-001 | F13 | `CargaInicial.cs` | RN-025 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `fcc08370be328b2f0669f434082552b03433c470` | Concluído |
+| FT-F13-002 | F13 | `FinTrackDbContext.cs` | RN-025 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `38c3eebf5c760c5fbab97e02d4e0b564960f0dc5` | Concluído |
+| FT-F13-003 | F13 | `20261112130706_AddCargasIniciais.cs` | RN-025 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `9ee08213a52c0524a2b79ca0ce815f882d02a94d` | Concluído |
+| FT-F13-004 | F13 | `20261112130706_AddCargasIniciais.Designer.cs` | RN-025 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `1f2ca1175825d2414558e78f5868024f51aa8001` | Concluído |
+| FT-F13-005 | F13 | `FinTrackDbContextModelSnapshot.cs` | RN-025 | `dotnet build` + `dotnet ef migrations has-pending-model-changes` | Aprovado, sem mudanças pendentes | `51dfffb3693d8448ffadcc95c523a0bc4ffc3d79` | Concluído |
+| FT-F13-006 | F13 | `InicializadorDadosDemonstracao.cs` | RN-025/RN-026 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `efbfce9e9f26d1589808f002a4083f144ec9ed58` | Concluído |
+| FT-F13-007 | F13 | `Program.cs` | RF-016 | `dotnet build src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj --no-restore` | Aprovado, 0 avisos/erros | `90ddcb0326261a3cbb081d46bd20d48ecf490748` | Concluído |
+| FT-F13-008 | F13 | `docker-compose.yml` | RF-016 | `docker compose config --quiet` | Aprovado | `def94532f0c7cfc86830babff58a1ad931723d4a` | Concluído |
+| FT-F13-009 | F13 | `InicializadorDadosDemonstracaoTests.cs` | RF-016/RN-025/RN-026 | `dotnet test tests/FinTrack.Tests/FinTrack.Tests.csproj --no-restore --filter FullyQualifiedName~InicializadorDadosDemonstracaoTests` | 5 aprovados | `8f0e0f0fda26804eaa913790ececa46461e97211` | Concluído |
+| FT-F13-010 | F13 | `MigrationsTests.cs` | RNF-006/RN-025 | `dotnet test tests/FinTrack.Tests/FinTrack.Tests.csproj --no-restore --filter FullyQualifiedName~MigrationsTests` | 1 aprovado | `12683b77ee2ad211b23cf9d300e912f68cbb75d8` | Concluído |
+| FT-F13-011 | F13 | `InicializadorDadosDemonstracaoTests.cs` | RN-025 | filtro `InicializadorDadosDemonstracaoTests` | 7 aprovados, incluindo Categoria ausente/incompatível | `d265afbe4b803f5b35c4c3e3233389b7e53f4678` | Concluído |
 
 +| FT-F03-001 | F03 | src/FinTrack.Core/Domain/Enums/ClassificadorConta.cs | SPEC-F03 | validação do commit | Aprovado | 72739b254f170d098d6cec808187282315f51e71 | Concluído |
 | FT-F03-002 | F03 | src/FinTrack.Core/Domain/Entities/Conta.cs | SPEC-F03 | validação do commit | Aprovado | 853d8250b9eb6d790303eef3cb6d79ea873c6278 | Concluído |

@@ -13,6 +13,8 @@ persistente e migrations aplicadas de modo explícito antes da API.
 - `.dockerignore` para reduzir e isolar o contexto de build.
 - `docker-compose.yml` com serviços de migrations e API.
 - Volume nomeado para o arquivo SQLite e porta host `8080`.
+- A carga única de dados de demonstração é especificada separadamente pela
+  SPEC-F13 e executada por serviço efêmero entre migrations e API.
 
 ## Fora do escopo
 
@@ -30,4 +32,5 @@ persistente e migrations aplicadas de modo explícito antes da API.
 ## Rastreabilidade
 
 - ADR-004, ADR-010 e ADR-011.
+- A sequência de dados de demonstração é definida por SPEC-F13 e ADR-012.
 - RNF-001, RNF-006, RNF-008 e RNF-009.

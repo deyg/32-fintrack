@@ -45,6 +45,7 @@ Permitir que uma pessoa registre **receitas recebidas** e **despesas pagas**, or
 | RF-013 | Calcular receitas, despesas e resultado no período | F08 | Alta |
 | RF-014 | Consolidar totais por conta, categoria e classificador | F08 | Alta |
 | RF-015 | Inicializar catálogo de 11 Categorias, sem duplicar seed | F09 | Média |
+| RF-016 | Aplicar uma única vez, pelo provisionamento Docker Compose, um conjunto de demonstração de Contas e Lançamentos vinculados às Categorias iniciais | F13 | Média |
 
 ## 5. Regras de negócio
 
@@ -74,6 +75,8 @@ Permitir que uma pessoa registre **receitas recebidas** e **despesas pagas**, or
 | RN-022 | Operações monetárias usam `decimal`; escala e arredondamento devem ser definidos antes de implementar. | Pendente |
 | RN-023 | Inativar/reativar Conta ou Categoria não altera Lançamentos já registrados. | Proposta |
 | RN-024 | A seed das 11 categorias é idempotente, sem sobrescrever cadastros existentes. | Definida |
+| RN-025 | A carga de demonstração de Contas e Lançamentos é distinta da F09, transacional e executada uma única vez por banco pelo serviço dedicado do Docker Compose. | Definida (DP-11) |
+| RN-026 | Reinícios não duplicam nem recriam dados de demonstração editados ou removidos; a carga não sobrescreve dados do usuário. | Definida (DP-11) |
 
 ## 6. Catálogo inicial de categorias (11)
 
@@ -92,6 +95,40 @@ Permitir que uma pessoa registre **receitas recebidas** e **despesas pagas**, or
 | Freelance | RECEITA |
 
 São categorias iniciais, não contas obrigatórias. O usuário pode criar categorias adicionais.
+
+### 6.1 Dados iniciais de demonstração (DP-11 — aprovado)
+
+Esta carga é separada da F09: não altera o catálogo aprovado de 11 Categorias nem a regra da SPEC-F09 de que ela não cria Contas. O conjunto abaixo é fictício e serve para que uma instalação tenha dados para visualizar e testar.
+
+| Conta | Categoria | Natureza | Classificador |
+|---|---|---|---|
+| Aluguel | Moradia | DESPESA | OF |
+| Mercado | Alimentação | DESPESA | OV |
+| Energia | Moradia | DESPESA | OV |
+| Transporte por aplicativo | Transporte | DESPESA | NOV |
+| Salário mensal | Salário | RECEITA | `null` |
+| Serviços freelance | Freelance | RECEITA | `null` |
+
+| Lançamento | Conta | Valor ilustrativo | Data de realização |
+|---|---|---:|---|
+| Aluguel | Aluguel | 1800,00 | D − 5 dias |
+| Compras do mês | Mercado | 620,50 | D − 4 dias |
+| Conta de energia | Energia | 180,45 | D − 3 dias |
+| Corridas | Transporte por aplicativo | 42,90 | D − 2 dias |
+| Recebimento mensal | Salário mensal | 5000,00 | D − 1 dia |
+| Trabalho freelance | Serviços freelance | 900,00 | D |
+
+`D` é a data civil UTC da primeira aplicação do conjunto, obtida do `TimeProvider`. As datas são calculadas uma vez, persistidas e não avançam nos reinícios. Os valores são exemplos fictícios, não saldo bancário nem expectativa de teste.
+
+**Política aprovada de aplicação:**
+
+- Executar somente pelo serviço dedicado de inicialização do Docker Compose, depois das migrations e antes da API. O escopo vale para o provisionamento local do Compose mesmo com `ASPNETCORE_ENVIRONMENT=Production`; não habilita a carga em qualquer outro deploy Production e a API não cria dados de exemplo no startup.
+- Manter a inicialização do catálogo de Categorias da F09 independente e aditiva; criar primeiro as Categorias ausentes e, depois, as Contas e os Lançamentos vinculados.
+- Registrar a aplicação em uma tabela técnica `cargas_iniciais`, com identificador estável do conjunto (`fintrack-demo-v1`) e restrição única. Criar as Contas, os Lançamentos e o marcador em uma única transação; o catálogo da F09 continua sendo inicializado por sua própria rotina.
+- Se o marcador já existir, não inserir, alterar ou recriar os registros do conjunto, mesmo que alguém os tenha editado ou removido. Reiniciar a aplicação não restaura dados apagados.
+- Não sobrescrever nem reutilizar Contas existentes. Se um nome de Conta colidir, ou se uma Categoria necessária estiver ausente, inativa ou com natureza incompatível, falhar explicitamente, reverter a transação e não marcar a carga como concluída.
+- Identificar cada conjunto aprovado por uma versão própria. Não atualizar nem reparar automaticamente um conjunto já aplicado; uma versão posterior exige identificador e aprovação próprios.
+- Persistir o marcador e os dados no mesmo SQLite do volume `fintrack-dados`.
 
 ## 7. Requisitos não funcionais e de engenharia
 
@@ -122,6 +159,7 @@ São categorias iniciais, não contas obrigatórias. O usuário pode criar categ
 | DP-08 | Paginação, ordenação e limites de consulta. | Definir antes de F07. |
 | DP-09 | API: rotas e contratos definitivos das novas features. | SPECs contêm propostas; aprovar antes de implementar. |
 | DP-10 | Validação de data futura e política de cancelamento (motivo, data). | Ratificar antes de F05/F06. |
+| DP-11 | Carga fictícia única de Contas e Lançamentos, seus valores/datas, ativação no Compose e comportamento diante de colisões/remoções. | Resolvida em 2026-11-12: aprovada conforme a seção 6.1 e ADR-012; SPEC-F13 define a implementação. |
 
 ## 9. Critério de prontidão (Definition of Ready)
 

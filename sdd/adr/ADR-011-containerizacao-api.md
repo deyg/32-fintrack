@@ -33,5 +33,7 @@ por ADR-004, não podem ser aplicadas automaticamente no startup da API.
 - Docker é infraestrutura de execução e não adiciona referência ao Core.
 - `docker compose up --build` aplica migrations e inicia a API com dados
   persistidos em volume local.
+- A ADR-012 estende a sequência com um serviço efêmero `inicializacao` entre
+  migrations e API, responsável pela carga única de dados de demonstração.
 - O fluxo é adequado ao ambiente local; publicação remota, segredos e hardening
   operacional exigem decisão específica.

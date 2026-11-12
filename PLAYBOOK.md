@@ -34,6 +34,7 @@ Em divergência material: **não adivinhar, não aprovar silenciosamente, regist
 | 9 | F08 | Consolidar Finanças | F05/F06/F07, regras históricas | Proposta |
 | 10 | F11 | Documentar API com Scalar | ADR-010 | Aprovada |
 | 11 | F12 | Containerizar API | ADR-011 | Aprovada |
+| 12 | F13 | Inicializar dados de demonstração | ADR-012 | Aprovada |
 
 **Importante:** a criação deste Playbook não transforma propostas em aprovações de negócio.
 
