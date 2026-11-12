@@ -1,5 +1,7 @@
 # FinTrack
 
+![alt text](image.png)
+
 Harness v1.8 — MVP financeiro em .NET 10, ASP.NET Core Minimal API, EF Core
 SQLite, FluentValidation e Result Pattern.
 
@@ -162,3 +164,5 @@ registro de commits e validações está em
 - [ADRs](sdd/adr/) — decisões arquiteturais aceitas.
 
 Para evoluir uma feature, siga `AGENTS.md` e use `$feature-orchestrator`.
+
+![alt text](image-1.png)
