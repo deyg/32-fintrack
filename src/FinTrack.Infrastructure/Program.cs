@@ -23,6 +23,7 @@ using FinTrack.Core.Application.UseCases.Lancamentos.ConsolidarFinancas;
 using FinTrack.Infrastructure.ExceptionHandling;
 using FinTrack.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,7 @@ builder.Services.AddScoped<IValidator<CriarCategoriaRequest>, CriarCategoriaRequ
 builder.Services.AddScoped<IValidator<RenomearCategoriaRequest>, RenomearCategoriaRequestValidator>();
 builder.Services.AddExceptionHandler<UnexpectedExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 app.UseExceptionHandler();
@@ -74,6 +76,15 @@ if (args.Contains("--inicializar-categorias", StringComparer.OrdinalIgnoreCase))
 // O esquema deve ser migrado explicitamente durante o deploy ou setup local.
 // A API não altera o esquema automaticamente ao iniciar.
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => options
+        .WithTitle("FinTrack API")
+        .DisableAgent());
+}
+
 app.MapContasEndpoints();
 app.MapCategoriasEndpoints();
 app.MapLancamentosEndpoints();
