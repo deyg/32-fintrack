@@ -35,6 +35,7 @@ builder.Services.AddScoped<IRepositorioCategorias, CategoriaRepository>();
 builder.Services.AddScoped<IRepositorioLancamentos, LancamentoRepository>();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<InicializadorCategorias>();
+builder.Services.AddScoped<InicializadorDadosDemonstracao>();
 builder.Services.AddScoped<CriarContaUseCase>();
 builder.Services.AddScoped<ConsultarContaUseCase>();
 builder.Services.AddScoped<ListarContasUseCase>();
@@ -70,6 +71,22 @@ if (args.Contains("--inicializar-categorias", StringComparer.OrdinalIgnoreCase))
     var inicializador = scope.ServiceProvider.GetRequiredService<InicializadorCategorias>();
     var adicionadas = await inicializador.ExecutarAsync(app.Lifetime.ApplicationStopping);
     app.Logger.LogInformation("Inicialização concluída: {Quantidade} categorias adicionadas.", adicionadas);
+    return;
+}
+
+if (args.Contains("--inicializar-dados-demonstracao", StringComparer.OrdinalIgnoreCase))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var inicializadorCategorias = scope.ServiceProvider.GetRequiredService<InicializadorCategorias>();
+    var categoriasAdicionadas = await inicializadorCategorias.ExecutarAsync(app.Lifetime.ApplicationStopping);
+    var inicializadorDados = scope.ServiceProvider.GetRequiredService<InicializadorDadosDemonstracao>();
+    var dadosAplicados = await inicializadorDados.ExecutarAsync(app.Lifetime.ApplicationStopping);
+
+    app.Logger.LogInformation(
+        "Inicialização de demonstração concluída: {CategoriasAdicionadas} categorias adicionadas; " +
+        "carga aplicada: {CargaAplicada}.",
+        categoriasAdicionadas,
+        dadosAplicados);
     return;
 }
 
