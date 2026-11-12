@@ -32,6 +32,7 @@ Em divergência material: **não adivinhar, não aprovar silenciosamente, regist
 | 7 | F06 | Cancelar Lançamento | F05, DP-10 | Proposta |
 | 8 | F07 | Consultar Lançamentos | F05/F06, filtros e paginação | Proposta |
 | 9 | F08 | Consolidar Finanças | F05/F06/F07, regras históricas | Proposta |
+| 10 | F11 | Documentar API com Scalar | ADR-010 | Aprovada |
 
 **Importante:** a criação deste Playbook não transforma propostas em aprovações de negócio.
 

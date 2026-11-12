@@ -144,6 +144,10 @@
 | FT-F10-026 | F10 | src/FinTrack.Web/src/app/app.html | SPEC-F10 | build Angular + 5/5 testes | Aprovado | 8060aef7191f500a00870a52739e43656cfb2e65 | Concluído |
 | FT-F10-027 | F10 | src/FinTrack.Web/src/app/app.spec.ts | SPEC-F10 | classificador em texto e ausência de combo na lista | Aprovado | b7b1399f2721c3e9b35865086017badba5ac56e5 | Concluído |
 
+| FT-F11-001 | F11 | `src/FinTrack.Infrastructure/FinTrack.Infrastructure.csproj` | SPEC-F11 / ADR-010 | `dotnet build FinTrack.slnx --no-restore` | Aprovado | `d14cdc9b8ca7751b318106d60399e71cf1d3599e` | Concluído |
+| FT-F11-002 | F11 | `src/FinTrack.Infrastructure/Program.cs` | SPEC-F11 / ADR-010 | `dotnet build FinTrack.slnx --no-restore` | Aprovado | `f19153b8f77c1d01e584e5ea12b6b715fd94c6b0` | Concluído |
+| FT-F11-003 | F11 | `tests/FinTrack.Tests/DocumentacaoApiHttpIntegrationTests.cs` | SPEC-F11 / RNF-010 | `dotnet test FinTrack.slnx --no-build --filter FullyQualifiedName~DocumentacaoApiHttpIntegrationTests` | 2 aprovados | `8ef944cb61fb1138c621aca217ebd2df91d7b617` | Concluído |
+
 ## Modelo de registro por passo
 
 ```markdown

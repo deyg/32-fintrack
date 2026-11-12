@@ -6,6 +6,7 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 |---|---|---|---|
 | .NET 10 / C# | Solution | Plataforma | `net10.0`; requer SDK .NET 10 |
 | ASP.NET Core Minimal API | Infrastructure/Adapters/Inbound/Http | Endpoints de Categorias, Contas, Lançamentos e Consolidados | HTTP fora do Core; contratos em pt-BR |
+| Microsoft.AspNetCore.OpenApi 10.0.14 + Scalar.AspNetCore | Infrastructure/Program.cs | Documento OpenAPI e referência interativa da API em desenvolvimento | Rotas `/openapi/v1.json` e `/scalar` apenas em `Development`; sem dependência no Core, credenciais ou publicação em produção; ADR-010 |
 | FluentValidation 12.2.0 | Infrastructure/Adapters/Inbound/Http | Validação antecipada de `CriarContaRequest`, antes do UseCase | Sem dependência no Core; regra de nome delegada a Domain/ValueObjects/NomeConta (ADR-003) |
 | Políticas de nome (`NomeConta`, `NomeCategoria`) | Core/Domain/ValueObjects | Fonte única de validação e normalização | Domain independente de FluentValidation; Categoria conforme ADR-005 |
 | Result Pattern simples | Core/Domain | `Success`, `Failure`, `Match` | Sem HTTP; sem `Bind`/`Map` |
