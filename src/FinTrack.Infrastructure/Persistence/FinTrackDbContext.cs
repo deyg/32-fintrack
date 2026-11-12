@@ -8,6 +8,7 @@ public sealed class FinTrackDbContext(DbContextOptions<FinTrackDbContext> option
     public DbSet<Conta> Contas => Set<Conta>();
     public DbSet<Categoria> Categorias => Set<Categoria>();
     public DbSet<Lancamento> Lancamentos => Set<Lancamento>();
+    public DbSet<CargaInicial> CargasIniciais => Set<CargaInicial>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +56,14 @@ public sealed class FinTrackDbContext(DbContextOptions<FinTrackDbContext> option
             entity.Property(x => x.MotivoCancelamento).HasColumnName("motivo_cancelamento").HasMaxLength(200);
             entity.HasIndex(x => new { x.DataRealizacao, x.Id });
             entity.HasOne<Conta>().WithMany().HasForeignKey(x => x.ContaId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<CargaInicial>(entity =>
+        {
+            entity.ToTable("cargas_iniciais");
+            entity.HasKey(x => x.Identificador);
+            entity.Property(x => x.Identificador).HasColumnName("identificador").HasMaxLength(100);
+            entity.Property(x => x.DataAplicacaoUtc).HasColumnName("data_aplicacao_utc").IsRequired();
         });
     }
 }
