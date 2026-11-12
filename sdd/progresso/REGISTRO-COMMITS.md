@@ -148,6 +148,10 @@
 | FT-F11-002 | F11 | `src/FinTrack.Infrastructure/Program.cs` | SPEC-F11 / ADR-010 | `dotnet build FinTrack.slnx --no-restore` | Aprovado | `f19153b8f77c1d01e584e5ea12b6b715fd94c6b0` | Concluído |
 | FT-F11-003 | F11 | `tests/FinTrack.Tests/DocumentacaoApiHttpIntegrationTests.cs` | SPEC-F11 / RNF-010 | `dotnet test FinTrack.slnx --no-build --filter FullyQualifiedName~DocumentacaoApiHttpIntegrationTests` | 2 aprovados | `8ef944cb61fb1138c621aca217ebd2df91d7b617` | Concluído |
 
+| FT-F12-001 | F12 | `Dockerfile` | SPEC-F12 / ADR-011 | `docker compose build` | Imagens `api` e `migracoes` construídas | `14126c6405c17730b329c7a5008eef99cd4ca0b2` | Concluído |
+| FT-F12-002 | F12 | `.dockerignore` | SPEC-F12 | `docker compose build` | Contexto de build filtrado | `15dddf65abc9e4b3321d6f6fdadc0bfbc3757c13` | Concluído |
+| FT-F12-003 | F12 | `docker-compose.yml` | SPEC-F12 / ADR-004 / ADR-011 | `docker compose up -d`; `GET /health` | migrations concluídas; API 200; Scalar 404 | `cb207b74b4bc275655a7864260a4946f2dca83fe` | Concluído |
+
 ## Modelo de registro por passo
 
 ```markdown
