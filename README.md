@@ -46,9 +46,39 @@ Parar e apagar também os dados locais:
 docker compose down -v
 ```
 
-O Compose usa `Production`; por isso `/scalar` e `/openapi/v1.json` não são
-publicados nesse ambiente. A carga de demonstração é exclusiva do serviço local
-`inicializacao`; a API nunca executa migrations ou seed no próprio startup.
+No Compose local, a API usa `Development`, então Scalar e OpenAPI ficam
+disponíveis em `/scalar` e `/openapi/v1.json`. Isso é exclusivo da execução
+local; deploys Production não devem publicar essas rotas. A carga de
+demonstração é exclusiva do serviço local `inicializacao`; a API nunca executa
+migrations ou seed no próprio startup.
+
+Para iniciar a API, a carga inicial e o Scalar pelo Docker, execute na raiz do
+repositório:
+
+```powershell
+docker compose up --build -d
+```
+
+Abra o Scalar em [http://localhost:8080/scalar](http://localhost:8080/scalar)
+ou o documento OpenAPI em
+[http://localhost:8080/openapi/v1.json](http://localhost:8080/openapi/v1.json).
+
+## Executar o frontend Angular
+
+Pré-requisitos: Node.js 22.19 ou compatível e npm 10.9. Mantenha os serviços
+Docker acima em execução para a API e o proxy do Angular.
+
+Em outro terminal PowerShell, na raiz do repositório:
+
+```powershell
+Set-Location src/FinTrack.Web
+npm ci
+npm start
+```
+
+Abra [http://localhost:4200](http://localhost:4200). O servidor Angular usa
+`proxy.conf.json` para encaminhar as chamadas da SPA à API em
+`http://127.0.0.1:8080`.
 
 ## Executar localmente
 
