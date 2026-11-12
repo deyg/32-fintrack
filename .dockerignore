@@ -1,0 +1,11 @@
+.git
+.vs
+**/bin
+**/obj
+src/FinTrack.Web/node_modules
+src/FinTrack.Web/dist
+*.db
+*.db-shm
+*.db-wal
+README.md
+audit-results*.json
