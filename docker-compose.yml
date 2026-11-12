@@ -10,12 +10,27 @@ services:
       - fintrack-dados:/dados
     restart: "no"
 
+  inicializacao:
+    build:
+      context: .
+      target: final
+    command: ["--inicializar-dados-demonstracao"]
+    depends_on:
+      migracoes:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__FinTrack: Data Source=/dados/fintrack.db
+    volumes:
+      - fintrack-dados:/dados
+    restart: "no"
+
   api:
     build:
       context: .
       target: final
     depends_on:
-      migracoes:
+      inicializacao:
         condition: service_completed_successfully
     environment:
       ASPNETCORE_ENVIRONMENT: Production
