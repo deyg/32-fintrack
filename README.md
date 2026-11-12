@@ -141,6 +141,115 @@ recurso inexistente 404 e conflitos de negócio, como duplicidade, retornam 409.
 - Scalar é uma referência OpenAPI interativa exclusiva de Development. Consulte
   [ADR-010](sdd/adr/ADR-010-documentacao-api-scalar.md).
 
+### Estrutura do Projeto - A decisão arquitetural central
+
+```
+FinTrack.Core/
+├── Domain/ (núcleo de negócio)
+│   ├── Entities/
+│   │   ├── Categoria.cs
+│   │   ├── Conta.cs
+│   │   └── Lancamento.cs
+│   ├── ValueObjects/
+│   │   ├── NomeCategoria.cs
+│   │   └── NomeConta.cs
+│   ├── Enums/
+│   │   ├── ClassificadorConta.cs
+│   │   ├── NaturezaCategoria.cs
+│   │   └── SituacaoLancamento.cs
+│   ├── Ports/
+│   │   ├── IRepositorioCategorias.cs
+│   │   ├── IContaRepository.cs
+│   │   └── IRepositorioLancamentos.cs
+│   ├── Errors/
+│   │   ├── Error.cs
+│   │   └── ErrorType.cs
+│   └── Results/
+│       ├── Result.cs
+│       └── ResultOfT.cs
+│
+└── Application/ (casos de uso)
+    └── UseCases/
+        ├── Categorias/
+        │   ├── CriarCategoria/
+        │   ├── ConsultarCategoria/
+        │   ├── ListarCategorias/
+        │   ├── RenomearCategoria/
+        │   ├── InativarCategoria/
+        │   └── ReativarCategoria/
+        ├── Contas/
+        │   ├── CriarConta/
+        │   ├── ConsultarConta/
+        │   ├── ListarContas/
+        │   ├── RenomearConta/
+        │   ├── AlterarEstadoConta/
+        │   ├── DefinirClassificador/
+        │   └── ClassificarContaLegada/
+        └── Lancamentos/
+            ├── RegistrarLancamento/
+            ├── CancelarLancamento/
+            ├── ConsultarLancamentos/
+            └── ConsolidarFinancas/
+
+FinTrack.Infrastructure/
+├── Adapters/Inbound/Http/ (endpoints Minimal API)
+│   ├── Categorias/
+│   │   ├── CategoriasEndpoints.cs
+│   │   ├── CriarCategoriaRequest.cs
+│   │   ├── CriarCategoriaRequestValidator.cs
+│   │   ├── RenomearCategoriaRequest.cs
+│   │   └── RenomearCategoriaRequestValidator.cs
+│   ├── Contas/
+│   │   ├── ContasEndpoints.cs
+│   │   ├── ClassificarContaLegadaRequest.cs
+│   │   ├── CriarContaRequest.cs
+│   │   ├── CriarContaRequestValidator.cs
+│   │   ├── DefinirClassificadorRequest.cs
+│   │   ├── RenomearContaRequest.cs
+│   │   └── RenomearContaRequestValidator.cs
+│   ├── Lancamentos/
+│   │   ├── LancamentosEndpoints.cs
+│   │   ├── LancamentoRequests.cs
+│   │   └── RegistrarLancamentoRequestValidator.cs
+│   └── ResultHttpExtensions.cs
+│
+├── Persistence/ (adaptador de saída — EF Core)
+│   ├── FinTrackDbContext.cs
+│   ├── CategoriaRepository.cs
+│   ├── ContaRepository.cs
+│   ├── LancamentoRepository.cs
+│   ├── CargaInicial.cs
+│   ├── InicializadorCategorias.cs
+│   ├── InicializadorDadosDemonstracao.cs
+│   └── Migrations/
+│       ├── 20261105000100_InitialCreate
+│       ├── 20261105120623_AddCategorias
+│       ├── 20261105122654_ExpandContasComCategoria
+│       ├── 20261105160313_AddLancamentos
+│       └── 20261112130706_AddCargasIniciais
+│
+├── ExceptionHandling/
+│   └── UnexpectedExceptionHandler.cs
+│
+└── Program.cs (configuração de DI e inicialização)
+```
+
+## Stack técnico
+
+| Tecnologia | Uso no FinTrack |
+|---|---|
+| .NET 10 e C# | Plataforma da API e do domínio |
+| ASP.NET Core Minimal API | Endpoints HTTP |
+| FluentValidation 12.2.0 | Validação antecipada das requisições HTTP, reutilizando regras do domínio quando aplicável |
+| EF Core 10 e SQLite | Persistência e evolução do banco com migrations versionadas |
+| OpenAPI e Scalar | Documentação interativa da API em desenvolvimento |
+| Result Pattern | Representação tipada dos resultados e erros de negócio |
+| Angular e TypeScript | Interface web |
+| xUnit e WebApplicationFactory | Testes unitários e de integração da API |
+| Docker Compose | Execução local da API, migrations e carga inicial |
+
+Detalhes e restrições da stack estão em [STACK.md](STACK.md).
+
 ## Testes e validações
 
 ```bash
