@@ -21,7 +21,7 @@ Arquitetura: Hexagonal; dois projetos de produção (`Core`, `Infrastructure`) e
 | Angular HttpClient | `src/FinTrack.Web/app/core` | Cliente tipado da API HTTP | Proxy local para a API; sem duplicar regras de domínio |
 | CSS responsivo próprio | `src/FinTrack.Web/app` | Tema black e componentes visuais | Sem biblioteca visual adicional neste incremento |
 | Vitest | `src/FinTrack.Web` | Testes unitários do frontend | Execução não interativa no pipeline local |
-| Docker Engine 28 + Docker Compose 2 | Ambiente / raiz do repositório | Build e execução local da API, migrations, carga inicial explícita e volume SQLite | `Dockerfile` somente para Infrastructure; Compose inicia `migracoes`, depois `inicializacao` e então `api`; volume `fintrack-dados`; carga de demonstração não executa no startup da API; sem Core, SPA ou Scalar em produção; ADR-011/012 |
+| Docker Engine 28 + Docker Compose 2 | Ambiente / raiz do repositório | Build e execução local da API em Development, migrations, carga inicial explícita, Scalar e volume SQLite | `Dockerfile` somente para Infrastructure; Compose inicia `migracoes`, depois `inicializacao` e então `api`; volume `fintrack-dados`; carga não executa no startup da API; deploy Production não publica Scalar/OpenAPI; ADR-011/012/013 |
 | Git | DevOps | Versionamento | Não criar commits sem autorização |
 
 Os pacotes da Infrastructure incluem FluentValidation 12.2.0. O `RequestValidator` usa `ValidateAsync` explicitamente e gera `ValidationProblem` (HTTP 400). O Domain conserva as invariantes e o SQLite protege a unicidade. A criação/evolução do banco é feita via migrations versionadas (`dotnet ef database update` no ambiente de desenvolvimento). A API não executa migrations no startup. As migrations desta revisão foram escritas manualmente e exigem verificação com SDK .NET 10 (`has-pending-model-changes`), além de testes de integração executados antes de produção.
@@ -32,4 +32,5 @@ ADR-006 define a transição segura das Contas legadas. ADR-007 define estados e
 reativação. ADR-008 define valores, datas, cancelamento, consultas e consolidação.
 ADR-009 posiciona a SPA Angular como cliente independente da API.
 ADR-011 define a execução local em Docker da API e das migrations; ADR-012
-define a carga única de dados de demonstração no Compose.
+define a carga única de dados de demonstração no Compose; ADR-013 permite
+Scalar/OpenAPI no perfil exclusivamente local do Compose.

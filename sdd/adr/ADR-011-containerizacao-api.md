@@ -16,8 +16,9 @@ por ADR-004, não podem ser aplicadas automaticamente no startup da API.
 - Executar `dotnet ef database update` no serviço efêmero `migracoes`, antes da
   API, e manter a API sem migrations no startup.
 - Persistir SQLite no volume nomeado `fintrack-dados`.
-- Publicar a API na porta host `8080`; usar ambiente `Production` no Compose.
-- Manter Scalar/OpenAPI indisponíveis no contêiner de produção, conforme ADR-010.
+- Publicar a API na porta host `8080`; usar ambiente `Development` no Compose
+  local, conforme ADR-013.
+- Manter Scalar/OpenAPI indisponíveis em deploys Production, conforme ADR-010.
 
 ## Alternativas consideradas
 
@@ -35,5 +36,6 @@ por ADR-004, não podem ser aplicadas automaticamente no startup da API.
   persistidos em volume local.
 - A ADR-012 estende a sequência com um serviço efêmero `inicializacao` entre
   migrations e API, responsável pela carga única de dados de demonstração.
+- A ADR-013 habilita Scalar/OpenAPI somente no perfil local de desenvolvimento.
 - O fluxo é adequado ao ambiente local; publicação remota, segredos e hardening
   operacional exigem decisão específica.

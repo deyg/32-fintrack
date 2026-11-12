@@ -29,6 +29,11 @@ persistente e migrations aplicadas de modo explícito antes da API.
 4. Recriar o contêiner preserva os dados no volume `fintrack-dados`.
 5. `/scalar` retorna `404` no Compose de produção.
 
+**Nota:** o Compose deste repositório é exclusivamente local e usa
+`Development`, disponibilizando `/scalar` e `/openapi/v1.json` conforme
+ADR-013. O critério 5 se aplica a deploys configurados como `Production`, não
+ao Compose local.
+
 ## Rastreabilidade
 
 - ADR-004, ADR-010 e ADR-011.

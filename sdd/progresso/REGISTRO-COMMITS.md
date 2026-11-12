@@ -48,6 +48,7 @@
 | FT-F13-009 | F13 | `InicializadorDadosDemonstracaoTests.cs` | RF-016/RN-025/RN-026 | `dotnet test tests/FinTrack.Tests/FinTrack.Tests.csproj --no-restore --filter FullyQualifiedName~InicializadorDadosDemonstracaoTests` | 5 aprovados | `8f0e0f0fda26804eaa913790ececa46461e97211` | Concluído |
 | FT-F13-010 | F13 | `MigrationsTests.cs` | RNF-006/RN-025 | `dotnet test tests/FinTrack.Tests/FinTrack.Tests.csproj --no-restore --filter FullyQualifiedName~MigrationsTests` | 1 aprovado | `12683b77ee2ad211b23cf9d300e912f68cbb75d8` | Concluído |
 | FT-F13-011 | F13 | `InicializadorDadosDemonstracaoTests.cs` | RN-025 | filtro `InicializadorDadosDemonstracaoTests` | 7 aprovados, incluindo Categoria ausente/incompatível | `d265afbe4b803f5b35c4c3e3233389b7e53f4678` | Concluído |
+| FT-F12-004 | F12 | `docker-compose.yml` | ADR-013 | `docker compose config --quiet`; `GET /health`, `/scalar`, `/openapi/v1.json` | Compose válido; health 200; Scalar HTML 200; OpenAPI JSON 200 | `8ae6a4ff77302dd28ab0cbbfb5b55924545a1dba` | Concluído |
 
 +| FT-F03-001 | F03 | src/FinTrack.Core/Domain/Enums/ClassificadorConta.cs | SPEC-F03 | validação do commit | Aprovado | 72739b254f170d098d6cec808187282315f51e71 | Concluído |
 | FT-F03-002 | F03 | src/FinTrack.Core/Domain/Entities/Conta.cs | SPEC-F03 | validação do commit | Aprovado | 853d8250b9eb6d790303eef3cb6d79ea873c6278 | Concluído |
