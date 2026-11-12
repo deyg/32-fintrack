@@ -94,6 +94,42 @@ public sealed class InicializadorDadosDemonstracaoTests
     }
 
     [Fact]
+    public async Task FalhaSemInserirQuandoCategoriaNecessariaNaoExiste()
+    {
+        await using var banco = await BancoDeTeste.CriarAsync();
+        await new InicializadorCategorias(banco.Context).ExecutarAsync(default);
+        var categoria = await banco.Context.Categorias.SingleAsync(x => x.Nome == "Moradia");
+        banco.Context.Categorias.Remove(categoria);
+        await banco.Context.SaveChangesAsync();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new InicializadorDadosDemonstracao(banco.Context, new RelogioFixo(DataFixa))
+                .ExecutarAsync(default));
+
+        Assert.Empty(await banco.Context.Contas.ToListAsync());
+        Assert.Empty(await banco.Context.Lancamentos.ToListAsync());
+        Assert.Empty(await banco.Context.CargasIniciais.ToListAsync());
+    }
+
+    [Fact]
+    public async Task FalhaSemInserirQuandoNaturezaDaCategoriaEhIncompativel()
+    {
+        await using var banco = await BancoDeTeste.CriarAsync();
+        await new InicializadorCategorias(banco.Context).ExecutarAsync(default);
+        await banco.Context.Database.ExecuteSqlInterpolatedAsync(
+            $"UPDATE categorias SET natureza = {NaturezaCategoria.Receita.ToString()} WHERE nome = {"Moradia"}");
+        banco.Context.ChangeTracker.Clear();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new InicializadorDadosDemonstracao(banco.Context, new RelogioFixo(DataFixa))
+                .ExecutarAsync(default));
+
+        Assert.Empty(await banco.Context.Contas.ToListAsync());
+        Assert.Empty(await banco.Context.Lancamentos.ToListAsync());
+        Assert.Empty(await banco.Context.CargasIniciais.ToListAsync());
+    }
+
+    [Fact]
     public async Task MarcadorExistenteNaoRecriaRegistrosEditadosOuRemovidos()
     {
         await using var banco = await BancoDeTeste.CriarAsync();
