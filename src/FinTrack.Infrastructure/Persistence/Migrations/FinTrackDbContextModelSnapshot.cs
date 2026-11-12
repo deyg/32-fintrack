@@ -142,6 +142,22 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.ToTable("lancamentos", (string)null);
                 });
 
+            modelBuilder.Entity("FinTrack.Infrastructure.Persistence.CargaInicial", b =>
+                {
+                    b.Property<string>("Identificador")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("identificador");
+
+                    b.Property<DateTimeOffset>("DataAplicacaoUtc")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("data_aplicacao_utc");
+
+                    b.HasKey("Identificador");
+
+                    b.ToTable("cargas_iniciais", (string)null);
+                });
+
             modelBuilder.Entity("FinTrack.Core.Domain.Entities.Conta", b =>
                 {
                     b.HasOne("FinTrack.Core.Domain.Entities.Categoria", null)
