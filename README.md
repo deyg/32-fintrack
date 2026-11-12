@@ -1,82 +1,129 @@
-# FinTrack — MVP do Harness v1.8
+# FinTrack
 
-MVP financeiro em .NET 10, ASP.NET Core Minimal API, EF Core + SQLite,
-FluentValidation e Result Pattern. Implementa Categorias, Contas, Lançamentos,
-cancelamento, consultas, consolidação e seed idempotente, preservando a transição
-das Contas legadas descrita na ADR-006.
+Harness v1.8 — MVP financeiro em .NET 10, ASP.NET Core Minimal API, EF Core
+SQLite, FluentValidation e Result Pattern.
 
-## Executar (requer .NET SDK 10 e NuGet)
+O sistema gerencia Categorias, Contas (rubricas), Lançamentos, cancelamentos,
+consultas, consolidações e o catálogo inicial de categorias. `Conta` não é conta
+bancária; regras de negócio e arquitetura estão em `sdd/`.
+
+## Executar com Docker
+
+Pré-requisito: Docker Desktop com o Engine em execução.
+
+```bash
+docker compose up --build -d
+```
+
+O Compose cria o volume nomeado `fintrack-dados`, executa as migrations em um
+serviço efêmero antes da API e publica a aplicação em:
+
+```text
+http://localhost:8080/health
+```
+
+Verificar serviços e logs:
+
+```bash
+docker compose ps
+docker compose logs api
+docker compose logs migracoes
+```
+
+Parar sem apagar o banco:
+
+```bash
+docker compose down
+```
+
+Parar e apagar também os dados locais:
+
+```bash
+docker compose down -v
+```
+
+O Compose usa `Production`; por isso `/scalar` e `/openapi/v1.json` não são
+publicados nesse ambiente. A API nunca executa migrations no próprio startup.
+
+## Executar localmente
+
+Pré-requisito: .NET SDK 10 e acesso ao NuGet.
 
 ```bash
 dotnet tool restore
 dotnet restore FinTrack.slnx
 dotnet build FinTrack.slnx --no-restore
-dotnet ef migrations list --project src/FinTrack.Infrastructure --startup-project src/FinTrack.Infrastructure --no-connect
-dotnet ef migrations has-pending-model-changes --project src/FinTrack.Infrastructure --startup-project src/FinTrack.Infrastructure
 dotnet ef database update --project src/FinTrack.Infrastructure --startup-project src/FinTrack.Infrastructure
 dotnet test FinTrack.slnx --no-build
-dotnet run --project src/FinTrack.Infrastructure
 ```
 
-Para carregar explicitamente as onze categorias iniciais após aplicar migrations:
+No PowerShell, iniciar explicitamente em desenvolvimento na porta 5100:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = 'Development'
+dotnet run --project src/FinTrack.Infrastructure --urls http://127.0.0.1:5100
+```
+
+Nesse modo, os recursos de documentação ficam disponíveis em:
+
+- http://127.0.0.1:5100/scalar
+- http://127.0.0.1:5100/openapi/v1.json
+
+Para carregar explicitamente as onze categorias iniciais após aplicar as
+migrations:
 
 ```bash
 dotnet run --project src/FinTrack.Infrastructure -- --inicializar-categorias
 ```
 
-Rotas principais: `/categorias`, `/contas`, `/lancamentos`, `/consolidados` e `/health`.
-As evidências finais estão em `sdd/progresso/AUDITORIA-MVP.md`.
+## Rotas e verificação
 
-O banco SQLite `fintrack.db` é criado/atualizado explicitamente com `dotnet ef database update`, sem `EnsureCreatedAsync` no startup. A migração inicial está em `Persistence/Migrations/`, e o projeto de testes aplica migrations em banco isolado. As migrations foram escritas manualmente porque o SDK .NET não está disponível neste ambiente; valide a consistência do modelo com `dotnet ef migrations has-pending-model-changes` antes de utilizá-las. Para produção, revise scripts SQL ou use migration bundles no pipeline de deploy; não migre automaticamente na inicialização da API.
+Rotas principais: `/categorias`, `/contas`, `/lancamentos`, `/consolidados` e
+`/health`.
 
-## Testar endpoint
-
-```bash
-curl -i -X POST http://localhost:5000/contas -H 'Content-Type: application/json' -d '{"nome":"Conta Corrente"}'
-```
-
-A URL real deve ser a publicada por `dotnet run`; ajuste para a porta indicada no console. Enviar o nome uma segunda vez (inclusive em minúsculas) deve produzir HTTP 409. Nome vazio ou com mais de 100 caracteres após `Trim()` deve produzir HTTP 400 com erro em `nome`.
-
-## Codex
-
-```text
-$feature-orchestrator
-Implemente ou revise a SPEC-001. Leia STACK.md e os ADRs. Valide com build e testes.
-```
-
-Os oito arquivos `SKILL.md` do Harness v1.8 estão em `.agents/skills/`. A política atualizada está em `sdd/adr/ADR-003-validacao-unica-e-http-mapping.md`. `AGENTS.md` orienta o Codex neste repositório.
-
-## Verificação
-
-Veja `REPORT.md`. Os comandos de compilação e testes dependem de SDK disponível e de acesso aos pacotes NuGet.
-
-## Evolução v1.8
-
-- Regra única de nome no domínio: `Domain/ValueObjects/NomeConta.cs`.
-- FluentValidation no Request HTTP reutiliza a mesma regra via `NomeConta.Criar`.
-- `ResultHttpExtensions` elimina os `switch` de mapeamento HTTP dos endpoints.
-- Testes de integração HTTP reais via `WebApplicationFactory`, com banco SQLite temporário isolado.
-- `EnsureCreatedAsync` é intencional para a PoC; não representa prontidão para produção.
-
-## Smoke test HTTP (após subir a API)
-
-Em outro terminal, com a URL informada por `dotnet run` (exemplo com porta 5100):
+Exemplo de verificação da API em Docker:
 
 ```bash
-curl -i -X POST http://localhost:5100/contas -H "Content-Type: application/json" -d '{"nome":"Conta Corrente"}'
-curl -i -X POST http://localhost:5100/contas -H "Content-Type: application/json" -d '{"nome":"conta corrente"}'
-curl -i -X POST http://localhost:5100/contas -H "Content-Type: application/json" -d '{"nome":""}'
-curl -i http://localhost:5100/health
+curl -i http://localhost:8080/health
 ```
 
-Esperado: 201, 409, 400 e 200. Para fixar a porta: `dotnet run --project src/FinTrack.Infrastructure --urls http://localhost:5100`.
+As falhas esperadas seguem `ProblemDetails`: validação de entrada retorna 400,
+recurso inexistente 404 e conflitos de negócio, como duplicidade, retornam 409.
 
-**Atenção a bancos de versões anteriores:** SQLite criado por `EnsureCreated` não terá `__EFMigrationsHistory`; não aplique a migração inicial diretamente a um banco com tabelas preexistentes. Para a PoC, recrie apenas o banco descartável ou prepare uma migração de adoção após backup/inspeção dos dados.
+## Arquitetura e persistência
 
-## CI
+- Arquitetura hexagonal: `FinTrack.Core` contém Domain e Application;
+  `FinTrack.Infrastructure` concentra HTTP, DI, EF Core e SQLite.
+- A direção de dependência é `Infrastructure → Core`; o Core não referencia
+  HTTP, EF Core, Docker ou Scalar.
+- O banco SQLite evolui exclusivamente por EF Core Migrations. Não há
+  `EnsureCreated` nem aplicação automática de migrations no startup da API.
+- Docker executa migrations separadamente, antes de iniciar a API. Consulte
+  [ADR-004](sdd/adr/ADR-004-migracoes-ef-core.md) e
+  [ADR-011](sdd/adr/ADR-011-containerizacao-api.md).
+- Scalar é uma referência OpenAPI interativa exclusiva de Development. Consulte
+  [ADR-010](sdd/adr/ADR-010-documentacao-api-scalar.md).
 
-A workflow `.github/workflows/fintrack-ci.yml` está preparada para executar build, verificação de migrations e testes xUnit/HTTP no GitHub após o push. Nenhuma execução no GitHub foi realizada nesta entrega.
+## Testes e validações
 
-## Evolução funcional SDD v0.1
+```bash
+dotnet restore FinTrack.slnx
+dotnet build FinTrack.slnx --no-restore
+dotnet test FinTrack.slnx --no-build
+dotnet ef migrations has-pending-model-changes --project src/FinTrack.Infrastructure --startup-project src/FinTrack.Infrastructure
+docker compose config --quiet
+```
 
-Consulte [PLAYBOOK.md](PLAYBOOK.md), [REQUISITOS.md](sdd/requisitos/REQUISITOS.md), [DOMINIO.md](sdd/dominio/DOMINIO.md) e as nove SPECs F01–F09 em `sdd/specs/`. Estes documentos registram a **evolução pretendida**, ainda não implementada, da PoC para Categoria → Conta → Lançamento. A implementação de código existente permanece no estágio v1.8; não se deve confundir este pacote documental com features executadas.
+Os testes de integração usam `WebApplicationFactory` e SQLite isolado. O
+registro de commits e validações está em
+[sdd/progresso/REGISTRO-COMMITS.md](sdd/progresso/REGISTRO-COMMITS.md).
+
+## SDD
+
+- [PLAYBOOK.md](PLAYBOOK.md) — sequência e regras de execução.
+- [Requisitos](sdd/requisitos/REQUISITOS.md) — regras de produto e negócio.
+- [Domínio](sdd/dominio/DOMINIO.md) — modelo e invariantes.
+- [SPECs](sdd/specs/) — especificações das features F01 a F12.
+- [ADRs](sdd/adr/) — decisões arquiteturais aceitas.
+
+Para evoluir uma feature, siga `AGENTS.md` e use `$feature-orchestrator`.
