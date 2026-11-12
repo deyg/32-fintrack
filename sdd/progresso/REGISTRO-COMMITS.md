@@ -152,6 +152,8 @@
 | FT-F12-002 | F12 | `.dockerignore` | SPEC-F12 | `docker compose build` | Contexto de build filtrado | `15dddf65abc9e4b3321d6f6fdadc0bfbc3757c13` | Concluído |
 | FT-F12-003 | F12 | `docker-compose.yml` | SPEC-F12 / ADR-004 / ADR-011 | `docker compose up -d`; `GET /health` | migrations concluídas; API 200; Scalar 404 | `cb207b74b4bc275655a7864260a4946f2dca83fe` | Concluído |
 
+| FT-F12-004 | F12 | `src/FinTrack.Web/proxy.conf.json` | SPEC-F12 / ADR-011 | `npm run build`; `GET http://127.0.0.1:4200/health` | Build Angular aprovado; proxy retorna 200 da API Docker | `0749c4f112ea15d92d97e511eaf43582747ba182` | Concluído |
+
 ## Modelo de registro por passo
 
 ```markdown
