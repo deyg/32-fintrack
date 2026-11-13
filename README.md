@@ -143,6 +143,8 @@ recurso inexistente 404 e conflitos de negócio, como duplicidade, retornam 409.
 
 ### Estrutura do Projeto - A decisão arquitetural central
 
+![alt text](image-2.png)
+
 ```
 FinTrack.Core/
 ├── Domain/ (núcleo de negócio)
